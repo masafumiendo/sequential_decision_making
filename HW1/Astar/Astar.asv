@@ -34,10 +34,10 @@ classdef Astar
                     eval = actual(map, n_best, neighbor, eval_list) + heuristic(map, neighbor, h_type);
                     % check the neighbor is in open_list or not
                     if pq_test(open_list, neighbor)
-                        % update evaluation function and open list
+                        % update evaluation function in the list
                         if eval < eval_list(neighbor)
                             eval_list(neighbor) = eval;
-                            open_list = pq_set(open_list, neighbor, eval);
+                            open_list
                         end
                     else
                         % add neighbor to open_list
