@@ -9,7 +9,7 @@ classdef Astar
     end
     
     methods
-        function [] = search(start, goal, map, h_type)
+        function [path] = search(obj, start, goal, map, h_type)
             
             % initialization
             [~, num_nodes] = get_start(map);
@@ -21,7 +21,6 @@ classdef Astar
             while true
                 % pick best node and remove it from open_list
                 [open_list, n_best] = pq_pop(open_list);
-                
                 % check n_best is goal or not
                 if n_best == goal
                     break
@@ -29,15 +28,15 @@ classdef Astar
                 
                 % expand all nodes that are neibhbors of n_best
                 [neighbors, ~] = get_neighbors(map, n_best);
-                for index_neighbor=1:length(neighbors)
+                for index_neighbor=1:length(neighbors)-1
                     neighbor = neighbors(index_neighbor);
-                    eval = actual(map, n_best, neighbor, eval_list) + heuristic(map, neighbor, h_type);
+                    eval = actual(obj, n_best, eval_list) + heuristic(obj, map, neighbor, h_type);
                     % check the neighbor is in open_list or not
                     if pq_test(open_list, neighbor)
-                        % update evaluation function in the list
+                        % update evaluation function and open list
                         if eval < eval_list(neighbor)
                             eval_list(neighbor) = eval;
-                            open_list
+                            open_list = pq_set(open_list, neighbor, eval);
                         end
                     else
                         % add neighbor to open_list
@@ -45,25 +44,32 @@ classdef Astar
                     end
                 end
             end
-        end
-        
-        function [] = get_path()
             
+            % after finishing search process, get a path from solution
+            path = get_path(obj, start, n_best, map, eval_list);
         end
         
-        % function to calculate actual cost of the neighbor
-        function [cost_a] = actual(map, n_best, neighbor, eval_list)
-            [x_best, y_best] = state_from_index(map, n_best);
-            [x_neig, y_neig] = state_from_index(map, neighbor);
-            if x_best == x_neig && y_best == y_neig
-                cost_a = eval_list(n_best);
-            else
-                cost_a = eval_list(n_best) + 1;
+        function [path] = get_path(obj, start, n_best, map, eval_list)
+            % initialization
+            path = [];
+            while n_best ~= start
+                disp(n_best)
+                [x_best, y_best] = state_from_index(map, n_best);
+                path = [path; x_best, y_best];
+                [neighbors, ~] = get_neighbors(map, n_best);
+                neighbors = neighbors(1:end-1);
+                [~, index_neighbor] = min(eval_list(neighbors));
+                n_best = neighbors(index_neighbor);
             end
         end
         
+        % function to calculate actual cost of the neighbor
+        function [cost_a] = actual(obj, n_best, eval_list)
+            cost_a = eval_list(n_best) + 1;
+        end
+        
         % function to calculate heuristic cost of the neighbor
-        function [cost_h] = heuristic(map, neighbor, h_type)
+        function [cost_h] = heuristic(obj, map, neighbor, h_type)
             [x_neig, y_neig] = state_from_index(map, neighbor);
             [x_goal, y_goal] = state_from_index(map, get_goal(map));
             if h_type == 'm'

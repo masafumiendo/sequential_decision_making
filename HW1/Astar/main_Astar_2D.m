@@ -9,3 +9,10 @@ map = read_map('maze1.pgm');
 % set start and goal info.
 [start, num_nodes] = get_start(map);
 goal = get_goal(map);
+h_type = "m"; % manhattan distance as heuristic
+
+@Astar.m;
+astar = Astar;
+
+path = astar.search(start, goal, map, h_type);
+plot_path(map, path, 'path planning result')
