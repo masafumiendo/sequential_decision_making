@@ -16,7 +16,7 @@ astar = Astar;
 
 path = astar.search(start, goal, map, h_type);
 if h_type == 'm'
-    plot_path(map, path, 'A* path planning result')
+    plot_path(map, path, 'A* path planning result, Manhattan heuristic')
 else
-    plot_path(map, path, 'A* path planning result')
+    plot_path(map, path, 'A* path planning result, Euclidian heuristic')
 end

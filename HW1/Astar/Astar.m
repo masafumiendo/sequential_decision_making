@@ -34,22 +34,12 @@ classdef Astar
                 for index_neighbor=1:length(neighbors)-1
                     neighbor = neighbors(index_neighbor);
                     eval = actual(obj, n_best, eval_list) + heuristic(obj, map, neighbor, h_type);
+                    % check the current and previous cost
                     if eval < eval_list(neighbor)
                         eval_list(neighbor) = eval;
+                        % update open list
                         open_list = pq_set(open_list, neighbor, eval);
                     end
-%                     % check the neighbor is in open_list or not
-%                     if pq_test(open_list, neighbor)
-%                         % if so, check current and previous cost
-%                         if eval < eval_list(neighbor)
-%                             eval_list(neighbor) = eval;
-%                             % update open list
-%                             open_list = pq_set(open_list, neighbor, eval);
-%                         end
-%                     else
-%                         % if not, add neighbor to open_list
-%                         open_list = pq_set(open_list, neighbor, eval);
-%                     end
                 end
             end
             
