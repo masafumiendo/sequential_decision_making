@@ -6,17 +6,28 @@
 classdef Astar
     
     properties
+        start
+        goal
+        map
+        h_type
     end
     
     methods
-        function [path] = search(obj, start, goal, map, h_type)
+        function obj = Astar(start, goal, map, h_type)
+            obj.start = start;
+            obj.goal = goal;
+            obj.map = map;
+            obj.h_type = h_type;
+        end
+        
+        function [path] = search(obj)
             
             % initialization
-            [~, num_nodes] = get_start(map);
+            [~, num_nodes] = get_start(obj.map);
             eval_list = inf * ones(num_nodes, 1); % evaluation function list
             open_list = pq_init(num_nodes); % open list
             % starting position
-            eval_list(start) = 0;
+            eval_list(obstart) = 0;
             open_list = pq_set(open_list, start, eval_list(start));
             while true
                 % pick best node and remove it from open_list
@@ -37,28 +48,17 @@ classdef Astar
                     % check the current and previous cost
                     if eval < eval_list(neighbor)
                         eval_list(neighbor) = eval;
+                        % update open list
                         open_list = pq_set(open_list, neighbor, eval);
                     end
-%                     % check the neighbor is in open_list or not
-%                     if pq_test(open_list, neighbor)
-%                         % if so, check current and previous cost
-%                         if eval < eval_list(neighbor)
-%                             eval_list(neighbor) = eval;
-%                             % update open list
-%                             open_list = pq_set(open_list, neighbor, eval);
-%                         end
-%                     else
-%                         % if not, add neighbor to open_list
-%                         open_list = pq_set(open_list, neighbor, eval);
-%                     end
                 end
             end
             
             % after finishing search process, get an optimal path from solution
-            path = get_path(obj, start, goal, map, eval_list);
+            path = get_path(obj, eval_list);
         end
         
-        function [path] = get_path(obj, start, goal, map, eval_list)
+        function [path] = get_path(obj, eval_list)
             % initialization
             path = [];
             n_best = goal; % start from the goal node
