@@ -1,6 +1,6 @@
 % Author: Masafumi Endo
 % Date: 01/18/2021
-% Version: 1.0
+% Version: 2.0
 % Description: Implement RRT
 
 classdef RRT
@@ -34,7 +34,6 @@ classdef RRT
             [x_start, y_start] = state_from_index(obj.map, obj.start);
             [x_goal, y_goal] = state_from_index(obj.map, obj.goal);
             node_list = [x_start, y_start];
-            parent_list = [x_start, y_start];
             node_cnt = 1;
             while true
                 % random sampling
@@ -54,7 +53,6 @@ classdef RRT
                 if ~check_hit(obj.map, x_near, y_near, dx, dy)
                     % add new node
                     node_list = [node_list; x_new, y_new];
-                    parent_list = [parent_list; [x_near, y_near]];
                     node_cnt = node_cnt + 1;
                 end
                 
@@ -92,24 +90,8 @@ classdef RRT
             y_new = node_near(2) + dy;
         end
         
-        % function to get a path
+        % function to get a final path from goal to start
         function [path] = get_path(obj, node_list, parent_list)
-            % initialization
-            [x_goal, y_goal] = state_from_index(obj.map, obj.goal);
-            [vals, indx_back] = min(abs(node_list - [x_goal, y_goal]));
-            backx = node_list(indx_back(1),1);
-            backy = node_list(indx_back(1),2);
-            path = [x_goal, y_goal];
-            while ~any([backx, backy] <= [1,1])
-               path = [path; backx, backy]; %add back point to list
-               % find parent of that point. Should be at same index
-               [indx_back, ~] = find(node_list == [backx, backy]);
-
-               parentx = parent_list(indx_back(1),1);
-               parenty = parent_list(indx_back(1),2);
-               backx = parentx;
-               backy = parenty;
-            end
         end
     end
 end
