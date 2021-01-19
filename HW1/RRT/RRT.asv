@@ -59,7 +59,7 @@ classdef RRT
                 end
                 
                 % check goal
-                if abs(x_goal - x_new) < 1 && abs(y_goal - y_new) < 1
+                if all([abs(x_goal - x_new), abs(y_goal - y_new)] < [1, 1])
                     break
                 elseif node_cnt >= 1e+4 % max iteration is 10000
                     disp('error: RRT could not reach goal within 10000 nodes')
@@ -93,7 +93,7 @@ classdef RRT
         end
         
         % function to get a path
-        function [path] = get_path(obj, node_list, parent_list)
+        function [path] = get_path(obj, node_list)
             % initialization
             [x_goal, y_goal] = state_from_index(obj.map, obj.goal);
             [vals, indx_back] = min(abs(node_list - [x_goal, y_goal]));
