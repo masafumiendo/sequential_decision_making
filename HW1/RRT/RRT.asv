@@ -34,7 +34,7 @@ classdef RRT
             [x_start, y_start] = state_from_index(obj.map, obj.start);
             [x_goal, y_goal] = state_from_index(obj.map, obj.goal);
             node_list = [x_start, y_start];
-            parent_list = [nan];
+            parent_list = [nan, nan, nan];
             node_cnt = 1;
             while true
                 % random sampling
@@ -54,7 +54,7 @@ classdef RRT
                 if ~check_hit(obj.map, x_near, y_near, dx, dy)
                     % add new node
                     node_list = [node_list; x_new, y_new];
-                    parent_list = [parent_list; index_nearest];
+                    parent_list = [parent_list; x_near, y_near, index_nearest];
                     node_cnt = node_cnt + 1;
                 end
                 
@@ -94,6 +94,20 @@ classdef RRT
         
         % function to get a final path from goal to start
         function [path] = get_path(obj, node_list, parent_list)
+            
+            % initialization
+            path = [];
+            index_node = length(node_list);
+            while true
+                path = [path; node_list(index_node, :)];
+                parent = parent_list(index_node);
+               
+            end
+            
+            for i=1:length(node_list)
+                fprintf('just list up node_list: [%f, %f] and parent_list: [%f, %f, %f]\n', ...
+                    node_list(i, 1), node_list(i, 2), parent_list(i, 1), parent_list(i, 2), parent_list(i, 3))
+            end
         end
     end
 end

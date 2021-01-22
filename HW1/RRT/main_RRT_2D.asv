@@ -9,7 +9,7 @@ map = read_map('maze2.pgm');
 % set start and goal info.
 [start, num_nodes] = get_start(map);
 goal = get_goal(map);
-dist = 1; % dist to steer sampled point
+dist = 0; % dist to steer sampled point
 sampling_rate = 0.1; % rate to sample goal point
 rand_range = [0, 25]; % range to sample random point [min, max]
 
