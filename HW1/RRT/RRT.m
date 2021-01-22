@@ -94,6 +94,17 @@ classdef RRT
         
         % function to get a final path from goal to start
         function [path] = get_path(obj, node_list, parent_list)
+            
+            % initialization
+            path = [];
+            index_node = length(node_list);
+            while true
+                path = [path; node_list(index_node, :)];
+                index_node = parent_list(index_node, :);
+                if isnan(index_node)
+                    break
+                end
+            end
         end
     end
 end
