@@ -40,11 +40,9 @@ classdef Astar
                 end
                 
                 % expand all nodes that are neibhbors of n_best
-                % note that the last action is [0; 0] so the agent doesn't
-                % move
                 [neighbors, ~] = get_neighbors(obj.map, n_best);
-                % -1 is for removing the last action 
-                for index_neighbor=1:length(neighbors)-1
+                neighbors = neighbors((neighbors == n_best) ~= 1);
+                for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
                     eval = actual(obj, n_best, eval_list) + heuristic(obj, neighbor);
                     % check the current and previous cost
@@ -68,7 +66,7 @@ classdef Astar
                 [x_best, y_best] = state_from_index(obj.map, n_best);
                 path = [path; x_best, y_best];
                 [neighbors, ~] = get_neighbors(obj.map, n_best);
-                neighbors = neighbors(1:end-1);
+                neighbors = neighbors((neighbors == n_best) ~= 1);
                 [~, index_neighbor] = min(eval_list(neighbors));
                 % update n_best for the next loop
                 n_best = neighbors(index_neighbor);
