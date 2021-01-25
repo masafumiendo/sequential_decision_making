@@ -1,6 +1,6 @@
 % Author: Masafumi Endo
-% Date: 01/25/2021
-% Version: 2.0
+% Date: 01/14/2021
+% Version: 1.0
 % Description: Implement A*
 
 classdef Astar
@@ -27,15 +27,13 @@ classdef Astar
             % initialization
             [~, num_nodes] = get_start(obj.map);
             eval_list = inf * ones(num_nodes, 1); % evaluation function list
-            open_list = pq_init(num_nodes); % open list
+            open_list = pq_init(1e+4); % open list
             % starting position
-            cost2come = 0;
-            eval_list(obj.start) = cost2come;
+            eval_list(obj.start) = 0;
             open_list = pq_set(open_list, obj.start, eval_list(obj.start));
             while true
                 % pick best node and remove it from open_list
                 [open_list, n_best] = pq_pop(open_list);
-
                 % check n_best is goal or not
                 if n_best == obj.goal
                     break
@@ -46,8 +44,7 @@ classdef Astar
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
-                    
-                    eval = actual(obj, n_best, eval_list) + heuristic(obj, neighbor);
+                    eval = cnt + heuristic(obj, neighbor);
                     % check the current and previous cost
                     if eval < eval_list(neighbor)
                         eval_list(neighbor) = eval;
@@ -79,8 +76,6 @@ classdef Astar
         % function to calculate actual cost of the neighbor
         function [cost_a] = actual(obj, n_best, eval_list)
             cost_a = eval_list(n_best) + 1; % cost-to-come plus 1
-            [x_curr, y_curr] = state_from_index(obj.map, n_best);
-            fprintf('cost at (%f, %f): %f \n', x_curr, y_curr, eval_list(n_best))
         end
         
         % function to calculate heuristic cost of the neighbor
