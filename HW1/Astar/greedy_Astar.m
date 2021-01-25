@@ -28,8 +28,8 @@ classdef greedy_Astar
         
         function [path] = greedy_search(obj)
             tic
-            t_prev = toc;
             while toc < obj.t_limit
+                t_prev = toc;
                 [path, num_node] = search(obj);
                 t_curr = toc;
                 disp(' ')
@@ -40,7 +40,6 @@ classdef greedy_Astar
                 disp(' ')
                 
                 obj.epsilon = obj.epsilon - 0.5 * (obj.epsilon - 1);
-                t_prev = t_curr;
                 if obj.epsilon == 1
                     break
                 end
