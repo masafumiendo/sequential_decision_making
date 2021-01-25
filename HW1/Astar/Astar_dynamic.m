@@ -38,7 +38,7 @@ classdef Astar_dynamic
                 if n_best == obj.goal
                     break
                 end
-                
+                                
                 % expand all nodes that are neibhbors of n_best
                 [neighbors, ~] = get_neighbors_dynamic(obj.map, n_best);
                 neighbors = neighbors((neighbors == n_best) ~= 1);
@@ -81,13 +81,13 @@ classdef Astar_dynamic
         % function to calculate heuristic cost of the neighbor
         function [cost_h] = heuristic(obj, neighbor)
             [x_neig, y_neig, dx_neig, dy_neig] = dynamic_state_from_index(obj.map, neighbor);
-            [x_goal, y_goal, dx_neig, dy_neig] = dynamic_state_from_index(obj.map, get_goal(obj.map));
+            [x_goal, y_goal, dx_goal, dy_goal] = dynamic_state_from_index(obj.map, get_goal(obj.map));
             if obj.h_type == 'm'
                 % manhattan distance
-                cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal);
+                cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal) + abs(dx_neig - dx_goal) + abs(dy_neig - dy_goal);
             elseif obj.h_type == 'e'
                 % euclidian distance
-                cost_h = sqrt((x_neig - x_goal)^2 + (y_neig - y_goal)^2);
+                cost_h = sqrt((x_neig - x_goal)^2 + (y_neig - y_goal)^2 + (dx_neig - dx_goal)^2 + (dy_neig - dy_goal)^2);
             else
                 disp('select a type of heuristic function!')
             end

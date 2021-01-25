@@ -15,7 +15,7 @@ classdef Astar_dynamic
     
     methods
         % constructor
-        function obj = Astar(start, goal, map, h_type)
+        function obj = Astar_dynamic(start, goal, map, h_type)
             obj.start = start;
             obj.goal = goal;
             obj.map = map;
@@ -25,7 +25,7 @@ classdef Astar_dynamic
         function [path] = search(obj)
             
             % initialization
-            [~, num_nodes] = get_start(obj.map);
+            [~, num_nodes] = get_start_dynamic(obj.map);
             eval_list = inf * ones(num_nodes, 1); % evaluation function list
             open_list = pq_init(num_nodes); % open list
             % starting position
@@ -40,7 +40,7 @@ classdef Astar_dynamic
                 end
                 
                 % expand all nodes that are neibhbors of n_best
-                [neighbors, ~] = get_neighbors(obj.map, n_best);
+                [neighbors, ~] = get_neighbors_dynamic(obj.map, n_best);
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
@@ -63,9 +63,9 @@ classdef Astar_dynamic
             path = [];
             n_best = obj.goal; % start from the goal node
             while n_best ~= obj.start
-                [x_best, y_best] = state_from_index(obj.map, n_best);
+                [x_best, y_best, ~, ~] = dynamic_state_from_index(obj.map, n_best);
                 path = [path; x_best, y_best];
-                [neighbors, ~] = get_neighbors(obj.map, n_best);
+                [neighbors, ~] = get_neighbors_dynamic(obj.map, n_best);
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 [~, index_neighbor] = min(eval_list(neighbors));
                 % update n_best for the next loop
@@ -80,11 +80,11 @@ classdef Astar_dynamic
         
         % function to calculate heuristic cost of the neighbor
         function [cost_h] = heuristic(obj, neighbor)
-            [x_neig, y_neig] = state_from_index(obj.map, neighbor);
-            [x_goal, y_goal] = state_from_index(obj.map, get_goal(obj.map));
+            [x_neig, y_neig, dx_neig, dy_neig] = dynamic_state_from_index(obj.map, neighbor);
+            [x_goal, y_goal, dx_goal, dy_goal] = dynamic_state_from_index(obj.map, get_goal(obj.map));
             if obj.h_type == 'm'
                 % manhattan distance
-                cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal);
+                cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal) + abs(dx_neig - dx_goal) + abs(dy_neig - dy_goal);
             elseif obj.h_type == 'e'
                 % euclidian distance
                 cost_h = sqrt((x_neig - x_goal)^2 + (y_neig - y_goal)^2);
