@@ -4,6 +4,8 @@
 % Description: Implement A*
 
 classdef Astar
+    
+    % set properties
     properties
         start
         goal
