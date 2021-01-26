@@ -81,10 +81,10 @@ classdef Astar
             end
 
             % after finishing search process, get an optimal path from solution
-            path = get_path(obj, parent_list);
+            path = get_path(obj, closed_list, parent_list);
         end
         
-        function [path] = get_path(obj, parent_list)
+        function [path] = get_path(obj, closed_list, parent_list)
             % initialization
             [x_g, y_g] = state_from_index(obj.map, obj.goal);
             path = [x_g, y_g];
