@@ -112,15 +112,15 @@ classdef Astar_dynamic
         
         % function to calculate actual cost from n_best to neighbor
         function [cost_n] = cost(obj, n_best, neighbor)
-            [x_best, y_best, ~] = dynamic_state_from_index(obj.map, n_best);
-            [x_neig, y_neig, ~] = dynamic_state_from_index(obj.map, neighbor);
-            cost_n = abs(x_neig - x_best) + abs(y_neig - y_best);
+            [x_best, y_best, ~, ~] = dynamic_state_from_index(obj.map, n_best);
+            [x_neig, y_neig, ~, ~] = dynamic_state_from_index(obj.map, neighbor);
+            cost_n = sqrt((x_neig - x_best)^2 + (y_neig - y_best)^2);
         end
         
         % function to calculate heuristic cost of the neighbor
         function [cost_h] = h(obj, neighbor)
-            [x_neig, y_neig, ~] = dynamic_state_from_index(obj.map, neighbor);
-            [x_goal, y_goal, ~] = dynamic_state_from_index(obj.map, get_goal(obj.map));
+            [x_neig, y_neig, ~, ~] = dynamic_state_from_index(obj.map, neighbor);
+            [x_goal, y_goal, ~, ~] = dynamic_state_from_index(obj.map, get_goal(obj.map));
             if obj.h_type == 'm'
                 % manhattan distance
                 cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal);

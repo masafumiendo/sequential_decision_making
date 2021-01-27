@@ -1,9 +1,9 @@
 % Author: Masafumi Endo
 % Date: 01/26/2021
-% Version: 3.0
-% Description: Implement A*
+% Version: 2.0
+% Description: Implement A* in 4D space
 
-classdef Astar
+classdef Astar_dynamic
     
     % set properties
     properties
@@ -15,7 +15,7 @@ classdef Astar
     
     methods
         % constructor
-        function obj = Astar(start, goal, map, h_type)
+        function obj = Astar_dynamic(start, goal, map, h_type)
             obj.start = start;
             obj.goal = goal;
             obj.map = map;
@@ -25,7 +25,7 @@ classdef Astar
         function [path] = search(obj)
             
             % initialization
-            [~, num_nodes] = get_start(obj.map);
+            [~, num_nodes] = get_start_dynamic(obj.map);
             priority_list = inf * ones(num_nodes, 1); % list containing priorities
             open_list = pq_init(1e+4); % open list
             closed_list = []; % closed list
@@ -46,13 +46,14 @@ classdef Astar
                 end
                 
                 % expand all nodes that are neibhbors of n_best
-                [neighbors, ~] = get_neighbors(obj.map, n_best);
+                [neighbors, ~] = get_neighbors_dynamic(obj.map, n_best);
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
                     % calculate each cost
                     cost_g = g(obj, n_best, priority_list);
                     cost_n = cost(obj, n_best, neighbor);
+                    % cost_n = 1;
                     cost_h = h(obj, neighbor);
                     priority = cost_g + cost_n + cost_h;
                     % neighbor is in open_list
@@ -92,11 +93,11 @@ classdef Astar
         
         function [path] = get_path(obj, back_pointer)
             % initialization
-            [x_g, y_g] = state_from_index(obj.map, obj.goal);
+            [x_g, y_g, ~, ~] = dynamic_state_from_index(obj.map, obj.goal);
             path = [x_g, y_g];
             n_best = back_pointer(obj.goal);
             while true
-                [x_best, y_best] = state_from_index(obj.map, n_best);
+                [x_best, y_best, ~, ~] = dynamic_state_from_index(obj.map, n_best);
                 path = [path; x_best, y_best];
                 n_best = back_pointer(n_best);
                 if n_best == -1
@@ -112,15 +113,17 @@ classdef Astar
         
         % function to calculate actual cost from n_best to neighbor
         function [cost_n] = cost(obj, n_best, neighbor)
-            [x_best, y_best] = state_from_index(obj.map, n_best);
-            [x_neig, y_neig] = state_from_index(obj.map, neighbor);
+            [x_best, y_best, dx_best, dy_best] = dynamic_state_from_index(obj.map, n_best);
+            [x_neig, y_neig, dx_neig, dy_neig] = dynamic_state_from_index(obj.map, neighbor);
             cost_n = sqrt((x_neig - x_best)^2 + (y_neig - y_best)^2);
+            fprintf('x: %f -> %f, y: %f -> %f, cost -> %f \n', x_best, x_neig, y_best, y_neig, cost_n)
+            fprintf('dx: %f -> %f, dy: %f -> %f \n', dx_best, dx_neig, dy_best, dy_neig)
         end
         
         % function to calculate heuristic cost of the neighbor
         function [cost_h] = h(obj, neighbor)
-            [x_neig, y_neig] = state_from_index(obj.map, neighbor);
-            [x_goal, y_goal] = state_from_index(obj.map, get_goal(obj.map));
+            [x_neig, y_neig, ~, ~] = dynamic_state_from_index(obj.map, neighbor);
+            [x_goal, y_goal, ~, ~] = dynamic_state_from_index(obj.map, get_goal(obj.map));
             if obj.h_type == 'm'
                 % manhattan distance
                 cost_h = abs(x_neig - x_goal) + abs(y_neig - y_goal);

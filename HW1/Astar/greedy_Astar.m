@@ -140,7 +140,7 @@ classdef greedy_Astar
         function [cost_n] = cost(obj, n_best, neighbor)
             [x_best, y_best] = state_from_index(obj.map, n_best);
             [x_neig, y_neig] = state_from_index(obj.map, neighbor);
-            cost_n = abs(x_neig - x_best) + abs(y_neig - y_best);
+            cost_n = sqrt((x_neig - x_best)^2 + (y_neig - y_best)^2);
         end
         
         % function to calculate heuristic cost of the neighbor
