@@ -1,6 +1,6 @@
 % Author: Masafumi Endo
-% Date: 01/14/2021
-% Version: 1.0
+% Date: 01/26/2021
+% Version: 3.0
 % Description: Implement A*
 
 classdef Astar
@@ -31,7 +31,7 @@ classdef Astar
             open_list = pq_init(1e+4); % open list
             closed_list = []; % closed list
             % starting position
-            eval_list(obj.start) = 0;
+            eval_list(obj.start) = h(obj, obj.start);
             open_list = pq_set(open_list, obj.start, eval_list(obj.start));
             parent_list(obj.start) = -1;
             while true
@@ -50,7 +50,11 @@ classdef Astar
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
-                    eval = g(obj, n_best, eval_list) + cost(obj, n_best, neighbor) + h(obj, neighbor);
+                    % calculate cost
+                    cost_g = g(obj, n_best, eval_list);
+                    cost_n = cost(obj, n_best, neighbor);
+                    cost_h = h(obj, neighbor);
+                    eval = cost_g + cost_n + cost_h;
                     % neighbor is in open_list
                     if pq_test(open_list, neighbor)
                         if eval < eval_list(neighbor)
@@ -79,12 +83,12 @@ classdef Astar
                     end
                 end
             end
-
+            
             % after finishing search process, get an optimal path from solution
-            path = get_path(obj, closed_list, parent_list);
+            path = get_path(obj, parent_list);
         end
         
-        function [path] = get_path(obj, closed_list, parent_list)
+        function [path] = get_path(obj, parent_list)
             % initialization
             [x_g, y_g] = state_from_index(obj.map, obj.goal);
             path = [x_g, y_g];
