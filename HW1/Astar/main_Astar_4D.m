@@ -1,6 +1,6 @@
 % Author: Masafumi Endo
-% Date: 01/24/2021
-% Version: 1.0
+% Date: 01/26/2021
+% Version: 2.0
 % Description: Main file to run A* algorithm in 4D environment
 
 % select maze to find path
