@@ -63,24 +63,25 @@ classdef Astar
                             open_list = pq_set(open_list, neighbor, priority);
                             back_pointer(neighbor) = n_best;
                         end
-                    % neighbor is in closed_list
-                    elseif ismember(neighbor, closed_list)
-                        continue
-%                         if priority < priority_list(neighbor)
-%                             % remove neighbor from closed_list
-%                             index = closed_list(:) == neighbor;
-%                             closed_list = closed_list(~index);
-%                             % add it to open_list
-%                             priority_list(neighbor) = priority;
-%                             open_list = pq_set(open_list, neighbor, priority);
-%                             back_pointer(neighbor) = n_best;
-%                         end
-                    % neighbor is not in both open_list and closed_list 
+                    % neighbor is not in open_list    
                     else
+                        if ismember(neighbor, closed_list)
+%                             if priority < priority_list(neighbor)
+%                                 % remove neighbor from closed_list
+%                                 index = closed_list(:) == neighbor;
+%                                 closed_list = closed_list(~index);
+%                                 % add it to open_list
+%                                 priority_list(neighbor) = priority;
+%                                 open_list = pq_set(open_list, neighbor, priority);
+%                                 back_pointer(neighbor) = n_best;
+%                             end
+                            continue
                         % add neighbor to open_list
-                        priority_list(neighbor) = priority;
-                        open_list = pq_set(open_list, neighbor, priority);
-                        back_pointer(neighbor) = n_best;
+                        else
+                            priority_list(neighbor) = priority;
+                            open_list = pq_set(open_list, neighbor, priority);
+                            back_pointer(neighbor) = n_best;
+                        end
                     end
                 end
             end
