@@ -29,11 +29,11 @@ classdef greedy_Astar
         function [path] = greedy_search(obj)
             tic
             while toc < obj.t_limit
-                [path, num_node] = search(obj);
+                [path, nodes_expanded] = search(obj);
                 disp(' ')
                 disp('-------------------')
                 fprintf('epsilon: %f \n', obj.epsilon)
-                fprintf('number of nodes expanded: %d, path length: %f \n', num_node, length(path))
+                fprintf('number of nodes expanded: %d, path length: %f \n', nodes_expanded, length(path))
                 disp('-------------------')
                 disp(' ')
                 
@@ -47,7 +47,7 @@ classdef greedy_Astar
             end
         end
         
-        function [path, num_node] = search(obj)
+        function [path, nodes_expanded] = search(obj)
             
             % initialization
             [~, num_nodes] = get_start(obj.map);
@@ -59,11 +59,9 @@ classdef greedy_Astar
             priority_list(obj.start) = obj.epsilon * h(obj, obj.start);
             open_list = pq_set(open_list, obj.start, priority_list(obj.start));
             back_pointer(obj.start) = -1;
-            num_node = 1;
             while true
                 % pick best node and remove it from open_list
                 [open_list, n_best] = pq_pop(open_list);
-                num_node = num_node + 1;
                 % add best node to closed_list
                 closed_list = [closed_list; n_best];
 
@@ -114,6 +112,7 @@ classdef greedy_Astar
 
             % after finishing search process, get an optimal path from solution
             path = get_path(obj, back_pointer);
+            nodes_expanded = length(closed_list);
         end
         
         function [path] = get_path(obj, back_pointer)
