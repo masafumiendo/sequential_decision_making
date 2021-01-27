@@ -4,7 +4,8 @@
 % Description: Main file to run RRT algorithm in 2D environment
 
 % select maze to find path
-map = read_map('maze2.pgm');
+maze_num = 2;
+map = read_map('maze' + string(maze_num) + '.pgm');
 
 % set start and goal info.
 [start, num_nodes] = get_start(map);
@@ -16,4 +17,8 @@ rand_range = [0, 25]; % range to sample random point [min, max]
 @RRT.m;
 rrt = RRT(start, goal, map, dist, sampling_rate, rand_range);
 path = rrt.search();
-plot_path(map, path, 'RRT path planning result')
+plot_path(map, path, 'RRT for 2D maze' + string(maze_num))
+
+abs_path = pwd;
+abs_path = strcat(abs_path, '/HW1/Astar/fig/RRT_2D_maze', string(maze_num), '.png');
+saveas(gcf, abs_path)

@@ -4,7 +4,8 @@
 % Description: Main file to run A* algorithm in 2D environment
 
 % select maze to find path
-map = read_map('maze1.pgm');
+maze_num = 2;
+map = read_map('maze' + string(maze_num) + '.pgm');
 
 % set start and goal info.
 [start, num_nodes] = get_start(map);
@@ -16,7 +17,11 @@ astar = Astar(start, goal, map, h_type);
 
 path = astar.search();
 if h_type == 'm'
-    plot_path(map, path, 'A* path planning in 2D Space, Manhattan heuristic')
+    plot_path(map, path, 'A* for 2D maze' + string(maze_num))
 else
-    plot_path(map, path, 'A* path planning in 2D Space, Euclidian heuristic')
+    plot_path(map, path, 'A* for 2D maze' + string(maze_num))
 end
+
+abs_path = pwd;
+abs_path = strcat(abs_path, '/HW1/Astar/fig/Astar_2D_maze', string(maze_num), '_', h_type, '.png');
+saveas(gcf, abs_path)

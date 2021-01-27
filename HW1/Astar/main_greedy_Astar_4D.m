@@ -4,7 +4,8 @@
 % Description: Main file to run greedy-A* algorithm in 4D environment
 
 % select maze to find path
-map = read_map_for_dynamics('maze2.pgm');
+maze_num = 2;
+map = read_map_for_dynamics('maze' + string(maze_num) + '.pgm');
 
 % set start and goal info.
 [start, num_nodes] = get_start_dynamic(map);
@@ -18,7 +19,11 @@ greedy_astar_dynamic = greedy_Astar_dynamic(start, goal, map, h_type, epsilon, t
 
 path = greedy_astar_dynamic.greedy_search();
 if h_type == 'm'
-    plot_path(map, path, 'A* path planning in 4D Space, Manhattan heuristic')
+    plot_path(map, path, 'Greedy-A* for 4D maze' + string(maze_num) + ' in ' + string(t_limit) + ' sec')
 else
-    plot_path(map, path, 'A* path planning in 4D Space, Euclidian heuristic')
+    plot_path(map, path, 'Greedy-A* for 4D maze' + string(maze_num) + ' in ' + string(t_limit) + ' sec')
 end
+
+abs_path = pwd;
+abs_path = strcat(abs_path, '/HW1/Astar/fig/greedy_Astar_4D_maze', string(maze_num), '_', h_type, '_t_limit_', string(t_limit), '.png');
+saveas(gcf, abs_path)
