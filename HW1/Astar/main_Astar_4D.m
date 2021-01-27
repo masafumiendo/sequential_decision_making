@@ -4,7 +4,7 @@
 % Description: Main file to run A* algorithm in 4D environment
 
 % select maze to find path
-map = read_map_for_dynamics('maze2.pgm');
+map = read_map_for_dynamics('maze1.pgm');
 
 % set start and goal info.
 [start, num_nodes] = get_start_dynamic(map);
