@@ -12,7 +12,7 @@ map = read_map_for_dynamics('maze' + string(maze_num) + '.pgm');
 goal = get_goal_dynamic(map);
 h_type = "e"; % select type of heuristic "m" is manhattan "e" is euclidian
 epsilon = 10;
-t_limit = 0.05; % 0.05, 0.25, or 1 sec
+t_limit = 1; % 0.05, 0.25, or 1 sec
 
 @greedy_Astar_dynamic.m;
 greedy_astar_dynamic = greedy_Astar_dynamic(start, goal, map, h_type, epsilon, t_limit);
