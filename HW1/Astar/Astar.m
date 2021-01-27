@@ -26,14 +26,14 @@ classdef Astar
             
             % initialization
             [~, num_nodes] = get_start(obj.map);
-            priority_list = inf * ones(num_nodes, 1); % evaluation function list
-            parent_list = nan * ones(num_nodes, 1); % parent list
+            priority_list = inf * ones(num_nodes, 1); % list containing priorities
             open_list = pq_init(1e+4); % open list
             closed_list = []; % closed list
+            back_pointer = nan * ones(num_nodes, 1); % back-pointer attribute
             % starting position
             priority_list(obj.start) = h(obj, obj.start);
             open_list = pq_set(open_list, obj.start, priority_list(obj.start));
-            parent_list(obj.start) = -1;
+            back_pointer(obj.start) = -1;
             while true
                 % pick best node and remove it from open_list
                 [open_list, n_best] = pq_pop(open_list);
@@ -50,7 +50,7 @@ classdef Astar
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
-                    % calculate cost
+                    % calculate each cost
                     cost_g = g(obj, n_best, priority_list);
                     cost_n = cost(obj, n_best, neighbor);
                     cost_h = h(obj, neighbor);
@@ -61,7 +61,7 @@ classdef Astar
                             % update open_list
                             priority_list(neighbor) = priority;
                             open_list = pq_set(open_list, neighbor, priority);
-                            parent_list(neighbor) = n_best;
+                            back_pointer(neighbor) = n_best;
                         end
                     % neighbor is in closed_list
                     elseif ismember(neighbor, closed_list)
@@ -72,33 +72,32 @@ classdef Astar
                             % add it to open_list
                             priority_list(neighbor) = priority;
                             open_list = pq_set(open_list, neighbor, priority);
-                            parent_list(neighbor) = n_best;
+                            back_pointer(neighbor) = n_best;
                         end
                     % neighbor is not in both open_list and closed_list 
                     else
                         % add neighbor to open_list
                         priority_list(neighbor) = priority;
                         open_list = pq_set(open_list, neighbor, priority);
-                        parent_list(neighbor) = n_best;
+                        back_pointer(neighbor) = n_best;
                     end
                 end
             end
-            
+
             % after finishing search process, get an optimal path from solution
-            path = get_path(obj, parent_list);
+            path = get_path(obj, back_pointer);
         end
         
-        function [path] = get_path(obj, parent_list)
+        function [path] = get_path(obj, back_pointer)
             % initialization
             [x_g, y_g] = state_from_index(obj.map, obj.goal);
             path = [x_g, y_g];
-            parent = parent_list(obj.goal);
+            n_best = back_pointer(obj.goal);
             while true
-                n_best = parent;
                 [x_best, y_best] = state_from_index(obj.map, n_best);
                 path = [path; x_best, y_best];
-                parent = parent_list(n_best);
-                if parent == -1
+                n_best = back_pointer(n_best);
+                if n_best == -1
                     break
                 end
             end
