@@ -11,7 +11,7 @@ map = read_map('maze2.pgm');
 goal = get_goal(map);
 h_type = "e"; % select type of heuristic "m" is manhattan "e" is euclidian
 epsilon = 10;
-t_limit = 0.05; % 0.05, 0.25, or 1 sec
+t_limit = 1; % 0.05, 0.25, or 1 sec
 
 @greedy_Astar.m;
 greedy_astar = greedy_Astar(start, goal, map, h_type, epsilon, t_limit);

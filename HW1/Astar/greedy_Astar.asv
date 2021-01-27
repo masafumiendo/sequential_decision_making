@@ -30,7 +30,10 @@ classdef greedy_Astar
             tic
             while toc < obj.t_limit
                 [path, nodes_expanded] = search(obj);
-                path_length = get_path_length(path);
+                for i=1:length(path)-1
+                    xs = path(); xe = path();
+                    ys = path(); ye = path();
+                end
                 disp(' ')
                 disp('-------------------')
                 fprintf('epsilon: %f \n', obj.epsilon)
