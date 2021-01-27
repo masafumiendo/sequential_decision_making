@@ -1,6 +1,6 @@
 % Author: Masafumi Endo
-% Date: 01/22/2021
-% Version: 1.0
+% Date: 01/26/2021
+% Version: 2.0
 % Description: Implement greedy-A*
 
 classdef greedy_Astar
@@ -29,12 +29,10 @@ classdef greedy_Astar
         function [path] = greedy_search(obj)
             tic
             while toc < obj.t_limit
-                t_prev = toc;
                 [path, num_node] = search(obj);
-                t_curr = toc;
                 disp(' ')
                 disp('-------------------')
-                fprintf('time: %f, epsilon: %f \n', t_curr - t_prev, obj.epsilon)
+                fprintf('epsilon: %f \n', obj.epsilon)
                 fprintf('number of nodes expanded: %d, path length: %f \n', num_node, length(path))
                 disp('-------------------')
                 disp(' ')
@@ -53,16 +51,22 @@ classdef greedy_Astar
             
             % initialization
             [~, num_nodes] = get_start(obj.map);
-            eval_list = inf * ones(num_nodes, 1); % evaluation function list
-            open_list = pq_init(num_nodes); % open list
+            priority_list = inf * ones(num_nodes, 1); % list containing priorities
+            open_list = pq_init(1e+4); % open list
+            closed_list = []; % closed list
+            back_pointer = nan * ones(num_nodes, 1); % back-pointer attribute
             % starting position
-            eval_list(obj.start) = 0;
-            open_list = pq_set(open_list, obj.start, eval_list(obj.start));
+            priority_list(obj.start) = obj.epsilon * h(obj, obj.start);
+            open_list = pq_set(open_list, obj.start, priority_list(obj.start));
+            back_pointer(obj.start) = -1;
             num_node = 1;
             while true
                 % pick best node and remove it from open_list
                 [open_list, n_best] = pq_pop(open_list);
                 num_node = num_node + 1;
+                % add best node to closed_list
+                closed_list = [closed_list; n_best];
+
                 % check n_best is goal or not
                 if n_best == obj.goal
                     break
@@ -73,42 +77,74 @@ classdef greedy_Astar
                 neighbors = neighbors((neighbors == n_best) ~= 1);
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
-                    eval = actual(obj, n_best, eval_list) + obj.epsilon * heuristic(obj, neighbor);
-                    % check the current and previous cost
-                    if eval < eval_list(neighbor)
-                        eval_list(neighbor) = eval;
-                        % update open list
-                        open_list = pq_set(open_list, neighbor, eval);
+                    % calculate each cost
+                    cost_g = g(obj, n_best, priority_list);
+                    cost_n = cost(obj, n_best, neighbor);
+                    cost_h = obj.epsilon * h(obj, neighbor);
+                    priority = cost_g + cost_n + cost_h;
+                    % neighbor is in open_list
+                    if pq_test(open_list, neighbor)
+                        if priority < priority_list(neighbor)
+                            % update open_list
+                            priority_list(neighbor) = priority;
+                            open_list = pq_set(open_list, neighbor, priority);
+                            back_pointer(neighbor) = n_best;
+                        end
+                    % neighbor is in closed_list
+                    elseif ismember(neighbor, closed_list)
+                        continue
+%                         if priority < priority_list(neighbor)
+%                             % remove neighbor from closed_list
+%                             index = closed_list(:) == neighbor;
+%                             closed_list = closed_list(~index);
+%                             % add it to open_list
+%                             priority_list(neighbor) = priority;
+%                             open_list = pq_set(open_list, neighbor, priority);
+%                             back_pointer(neighbor) = n_best;
+%                         end
+                    % neighbor is not in both open_list and closed_list 
+                    else
+                        % add neighbor to open_list
+                        priority_list(neighbor) = priority;
+                        open_list = pq_set(open_list, neighbor, priority);
+                        back_pointer(neighbor) = n_best;
                     end
                 end
             end
-            
+
             % after finishing search process, get an optimal path from solution
-            path = get_path(obj, eval_list);
+            path = get_path(obj, back_pointer);
         end
         
-        function [path] = get_path(obj, eval_list)
+        function [path] = get_path(obj, back_pointer)
             % initialization
-            path = [];
-            n_best = obj.goal; % start from the goal node
-            while n_best ~= obj.start
+            [x_g, y_g] = state_from_index(obj.map, obj.goal);
+            path = [x_g, y_g];
+            n_best = back_pointer(obj.goal);
+            while true
                 [x_best, y_best] = state_from_index(obj.map, n_best);
                 path = [path; x_best, y_best];
-                [neighbors, ~] = get_neighbors(obj.map, n_best);
-                neighbors = neighbors((neighbors == n_best) ~= 1);
-                [~, index_neighbor] = min(eval_list(neighbors));
-                % update n_best for the next loop
-                n_best = neighbors(index_neighbor);
+                n_best = back_pointer(n_best);
+                if n_best == -1
+                    break
+                end
             end
         end
         
-        % function to calculate actual cost of the neighbor
-        function [cost_a] = actual(obj, n_best, eval_list)
-            cost_a = eval_list(n_best) + 1; % cost-to-come plus 1
+        % function to calculate actual cost of n_best
+        function [cost_g] = g(obj, n_best, priority_list)
+            cost_g = priority_list(n_best) - obj.epsilon * h(obj, n_best);
+        end
+        
+        % function to calculate actual cost from n_best to neighbor
+        function [cost_n] = cost(obj, n_best, neighbor)
+            [x_best, y_best] = state_from_index(obj.map, n_best);
+            [x_neig, y_neig] = state_from_index(obj.map, neighbor);
+            cost_n = abs(x_neig - x_best) + abs(y_neig - y_best);
         end
         
         % function to calculate heuristic cost of the neighbor
-        function [cost_h] = heuristic(obj, neighbor)
+        function [cost_h] = h(obj, neighbor)
             [x_neig, y_neig] = state_from_index(obj.map, neighbor);
             [x_goal, y_goal] = state_from_index(obj.map, get_goal(obj.map));
             if obj.h_type == 'm'
