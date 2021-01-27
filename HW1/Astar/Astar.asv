@@ -26,13 +26,12 @@ classdef Astar
             
             % initialization
             [~, num_nodes] = get_start(obj.map);
-            eval_list = inf * ones(num_nodes, 1); % evaluation function list
             parent_list = nan * ones(num_nodes, 1); % parent list
             open_list = pq_init(1e+4); % open list
             closed_list = []; % closed list
             % starting position
-            eval_list(obj.start) = h(obj, obj.start);
-            open_list = pq_set(open_list, obj.start, eval_list(obj.start));
+            priority = h(obj, obj.start);
+            open_list = pq_set(open_list, obj.start, priority);
             parent_list(obj.start) = -1;
             while true
                 % pick best node and remove it from open_list
@@ -51,34 +50,31 @@ classdef Astar
                 for index_neighbor=1:length(neighbors)
                     neighbor = neighbors(index_neighbor);
                     % calculate cost
-                    cost_g = g(obj, n_best, eval_list);
+                    cost_g = g(obj, n_best);
                     cost_n = cost(obj, n_best, neighbor);
                     cost_h = h(obj, neighbor);
-                    eval = cost_g + cost_n + cost_h;
+                    priority = cost_g + cost_n + cost_h;
                     % neighbor is in open_list
                     if pq_test(open_list, neighbor)
-                        if eval < eval_list(neighbor)
+                        if priority < pq_priority(neighbor)
                             % update open_list
-                            eval_list(neighbor) = eval;
-                            open_list = pq_set(open_list, neighbor, eval);
+                            open_list = pq_set(open_list, neighbor, priority);
                             parent_list(neighbor) = n_best;
                         end
                     % neighbor is in closed_list
                     elseif ismember(neighbor, closed_list)
-                        if eval < eval_list(neighbor)
+                        if priority < pq_priority(neighbor)
                             % remove neighbor from closed_list
                             index = closed_list(:) == neighbor;
                             closed_list = closed_list(~index);
                             % add it to open_list
-                            eval_list(neighbor) = eval;
-                            open_list = pq_set(open_list, neighbor, eval);
+                            open_list = pq_set(open_list, neighbor, priority);
                             parent_list(neighbor) = n_best;
                         end
                     % neighbor is not in both open_list and closed_list 
                     else
                         % add neighbor to open_list
-                        eval_list(neighbor) = eval;
-                        open_list = pq_set(open_list, neighbor, eval);
+                        open_list = pq_set(open_list, neighbor, priority);
                         parent_list(neighbor) = n_best;
                     end
                 end
@@ -104,24 +100,10 @@ classdef Astar
             end
         end
         
-        function [path] = get_path_old(obj, eval_list)
-            % initialization
-            path = [];
-            n_best = obj.goal; % start from the goal node
-            while n_best ~= obj.start
-                [x_best, y_best] = state_from_index(obj.map, n_best);
-                path = [path; x_best, y_best];
-                [neighbors, ~] = get_neighbors(obj.map, n_best);
-                neighbors = neighbors((neighbors == n_best) ~= 1);
-                [~, index_neighbor] = min(eval_list(neighbors));
-                % update n_best for the next loop
-                n_best = neighbors(index_neighbor);
-            end
-        end
-        
         % function to calculate actual cost of n_best
-        function [cost_g] = g(obj, n_best, eval_list)
-            cost_g = eval_list(n_best) - h(obj, n_best);
+        function [cost_g] = g(obj, n_best)
+            disp(pq)
+            cost_g = pq_priority(n_best) - h(obj, n_best);
         end
         
         % function to calculate actual cost from n_best to neighbor
