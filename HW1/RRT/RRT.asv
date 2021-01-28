@@ -28,7 +28,7 @@ classdef RRT
             obj.max_rand = rand_range(2);
         end
         
-        function [path, runtime] = search(obj)
+        function [path] = search(obj)
             
             % initialization
             [x_start, y_start] = state_from_index(obj.map, obj.start);
@@ -67,7 +67,7 @@ classdef RRT
                     break
                 end
             end
-            runtime = toc;
+            runtime toc;
             % after finishing search process, get a path from solution
             path = get_path(obj, node_list, parent_list);
         end
