@@ -1,44 +1,85 @@
 """
 Authors: Masafumi Endo
 Date: 02/01/2021
+Version: 1.0
 Objective: Implement a greedy solver for the discrete problem
 """
 
 import numpy as np
-from random import randint
-
+from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificationNetwork
 
 class GreedyNavigator:
     def __init__(self):
-        # The random navigator doesn't have any data members
-        # But a more complex navigator may need to keep track of things
-        # so you can create data members in this constructor
-        self.my_variable = 0
-        pass
+        # init two NN
+        self.uNet = WorldEstimatingNetwork()
+        self.classNet = DigitClassificationNetwork()
 
     def getAction(self, robot, map):
-        """ Randomly selects a valid direction for the robot to travel
-
-            The RandomNavigator completely ignores the incoming map of what has been seen so far.
-            Maybe a smarter agent would take this additional info into account...
+        """ Greedily select a valid direction for the robot to travel
+        Hint: The robot should look one step ahead and move to the location that gains the maximal information based on
+        the neural network prediction.
+        :return: direction
         """
-        direction = None
 
-        while direction is None:
+        # creates an estimate of what the world looks like before moving
+        exploredArea = np.zeros((28, 28))
+        for x in range(0, 28):
+            for y in range(0, 28):
+                if map[x, y] != 128:
+                    exploredArea[x, y] = 1
+        image = self.uNet.runNetwork(map, exploredArea)
 
-            randNumb = randint(0, 3)
+        # initialize dictionary
+        dict_info_quality = {}
 
-            if randNumb == 0:
-                if robot.getLoc()[0] - 1 >= 0:
-                    direction = 'left'
-            if randNumb == 1:
-                if robot.getLoc()[0] + 1 <= 27:
-                    direction = 'right'
-            if randNumb == 2:
-                if robot.getLoc()[1] + 1 <= 27:
-                    direction = 'down'
-            if randNumb == 3:
-                if robot.getLoc()[1] - 1 >= 0:
-                    direction = 'up'
+        # add possible movements w/ zero info quality
+        location_curr = robot.getLoc()
+        if location_curr[0] - 1 >= 0:
+            dict_info_quality['left'] = 0
+        elif location_curr[0] + 1 <= 27:
+            dict_info_quality['right'] = 0
+        elif location_curr[1] + 1 <= 27:
+            dict_info_quality['down'] = 0
+        elif location_curr[1] - 1 >= 0:
+            dict_info_quality['up'] = 0
+
+        # calculate info quality for possible movements
+        for direction in dict_info_quality:
+            dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, image)
+
+        # determine direction that gains the maximal information
+        direction = max(dict_info_quality, key=dict_info_quality.get)
 
         return direction
+
+    def _calc_info_quality(self, location_curr, direction, image):
+        """ Calculate information quality for the possible movement
+        Hint: Consider the values of the pixels in the prediction image.
+        :return: info_quality
+        """
+
+        location_next = self._get_next_location(location_curr, direction)
+
+        return info_quality
+
+    def _get_next_location(self, location_curr, direction):
+        """ Get next location of the robot
+        :return: location_next
+        """
+        xLoc = location_curr[0]
+        yLoc = location_curr[1]
+
+        if direction == 'left':
+            xLoc = xLoc - 1
+        elif direction == 'right':
+            xLoc = xLoc + 1
+        elif direction == 'down':
+            yLoc = yLoc + 1
+        elif direction == 'up':
+            yLoc = yLoc - 1
+        else:
+            raise ValueError(f"Robot received invalid direction: {direction}!")
+
+        location_next = (xLoc, yLoc)
+
+        return location_next
