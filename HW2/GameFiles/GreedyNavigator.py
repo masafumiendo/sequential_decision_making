@@ -6,13 +6,13 @@ Objective: Implement a greedy solver for the discrete problem
 """
 
 import numpy as np
+from PIL import Image
 from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificationNetwork
 
 class GreedyNavigator:
     def __init__(self):
-        # init two NN
+        # init NN that estimates the world
         self.uNet = WorldEstimatingNetwork()
-        self.classNet = DigitClassificationNetwork()
 
     def getAction(self, robot, map):
         """ Greedily select a valid direction for the robot to travel
@@ -36,17 +36,16 @@ class GreedyNavigator:
         location_curr = robot.getLoc()
         if location_curr[0] - 1 >= 0:
             dict_info_quality['left'] = 0
-        elif location_curr[0] + 1 <= 27:
+        if location_curr[0] + 1 <= 27:
             dict_info_quality['right'] = 0
-        elif location_curr[1] + 1 <= 27:
+        if location_curr[1] + 1 <= 27:
             dict_info_quality['down'] = 0
-        elif location_curr[1] - 1 >= 0:
+        if location_curr[1] - 1 >= 0:
             dict_info_quality['up'] = 0
 
         # calculate info quality for possible movements
         for direction in dict_info_quality:
             dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, image)
-
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
 
@@ -59,6 +58,7 @@ class GreedyNavigator:
         """
 
         location_next = self._get_next_location(location_curr, direction)
+        info_quality = image[location_next[0], location_next[1]]
 
         return info_quality
 
