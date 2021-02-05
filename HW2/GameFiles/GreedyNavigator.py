@@ -22,13 +22,12 @@ class GreedyNavigator:
         """
 
         # creates an estimate of what the world looks like before moving
-        exploredArea = np.zeros((28, 28))
+        mask = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
                 if map[x, y] != 128:
-                    exploredArea[x, y] = 1
-        image = self.uNet.runNetwork(map, exploredArea)
-
+                    mask[x, y] = 1
+        image = self.uNet.runNetwork(map, mask)
         # initialize dictionary
         dict_info_quality = {}
 
@@ -48,7 +47,6 @@ class GreedyNavigator:
             dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, image)
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
-
         return direction
 
     def _calc_info_quality(self, location_curr, direction, image):

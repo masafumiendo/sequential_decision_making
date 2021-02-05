@@ -33,7 +33,7 @@ navigator = GreedyNavigator()
 # Create a Game object, providing it with the map data, the goal location of the map, the navigator, and the robot
 game = GreedyGame(data, map.number, navigator, robot)
 
-# This loop runs the game for 1000 ticks, stopping if a goal is found.
+# This loop runs until the robot found the goal.
 while True:
     found_goal = game.tick()
     print(f"{game.getIteration()}: Robot at: ({robot.xLoc}, {robot.yLoc}), Score = {game.getScore()}")
