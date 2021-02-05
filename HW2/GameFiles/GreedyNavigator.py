@@ -6,6 +6,7 @@ Objective: Implement a greedy solver for the discrete problem
 """
 
 import numpy as np
+from matplotlib import pyplot as plt
 from PIL import Image
 from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificationNetwork
 
@@ -42,11 +43,18 @@ class GreedyNavigator:
         if location_curr[1] - 1 >= 0:
             dict_info_quality['up'] = 0
 
+        fig, (ax1, ax2) = plt.subplots(ncols=2)
+        pos = ax1.imshow(map)
+        pos = ax2.imshow(image, cmap='gray')
+
         # calculate info quality for possible movements
         for direction in dict_info_quality:
             dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, image)
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
+        print(location_curr)
+        print(dict_info_quality)
+        print(direction)
         return direction
 
     def _calc_info_quality(self, location_curr, direction, image):
@@ -56,7 +64,7 @@ class GreedyNavigator:
         """
 
         location_next = self._get_next_location(location_curr, direction)
-        info_quality = image[location_next[0], location_next[1]]
+        info_quality = self._get_max_info(image, location_next)
 
         return info_quality
 
@@ -81,3 +89,9 @@ class GreedyNavigator:
         location_next = (xLoc, yLoc)
 
         return location_next
+    
+    def _get_max_info(self, map, location):
+        """ Get maximum information at the given location
+        :return: max_info
+        """
+    return max_info
