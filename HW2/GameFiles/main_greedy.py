@@ -15,7 +15,9 @@ from networkFolder.functionList import Map, WorldEstimatingNetwork, DigitClassif
 
 # Create a Map Class Object
 map = Map()
-
+map.getNewMap()
+map.getNewMap()
+map.getNewMap()
 # Get the current map from the Map Class
 data = map.map
 
@@ -36,7 +38,8 @@ game = GreedyGame(data, map.number, navigator, robot)
 # This loop runs until the robot found the goal.
 while True:
     found_goal = game.tick()
-    print(f"{game.getIteration()}: Robot at: ({robot.xLoc}, {robot.yLoc}), Score = {game.getScore()}")
+    print(" ")
+    print(f"after one iteration of the game -> {game.getIteration()}: Robot at: ({robot.xLoc}, {robot.yLoc}), Score = {game.getScore()}")
     if found_goal:
         print(f"Found goal at time step: {game.getIteration()}!")
         break

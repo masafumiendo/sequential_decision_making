@@ -14,6 +14,7 @@ class GreedyNavigator:
     def __init__(self):
         # init NN that estimates the world
         self.uNet = WorldEstimatingNetwork()
+        self.classNet = DigitClassificationNetwork()
 
     def getAction(self, robot, map, map_gt):
         """ Greedily select a valid direction for the robot to travel
@@ -46,20 +47,14 @@ class GreedyNavigator:
         if location_curr[1] - 1 >= 0:
             dict_info_quality['up'] = 0
 
-        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
-        pos = ax1.imshow(map_gt)
-        pos = ax2.imshow(map)
-        pos = ax3.imshow(map_prediction, cmap='gray')
-        plt.show()
-
         # calculate info quality for possible movements
         for direction in dict_info_quality:
             dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, mask, map, map_prediction)
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
-        print(location_curr)
-        print(dict_info_quality)
-        print(direction)
+
+        self._summarize_progress(location_curr, dict_info_quality, direction, map_gt, map, map_prediction)
+
         return direction
 
     def _calc_info_quality(self, location_curr, direction, mask, map, map_prediction):
@@ -108,9 +103,27 @@ class GreedyNavigator:
                     continue
                 # otherwise update info_quality if there are unexplored areas
                 else:
+                    # 0 is unexplored
                     if mask[location[0]+x, location[1]+y] == 0:
                         info_quality += map_prediction[location[0]+x, location[1]+y]
                     else:
-                        info_quality += map[location[0]+x, location[1]+y]
+                        continue
 
         return info_quality
+
+    def _summarize_progress(self, location, dict_info_quality, direction, map_gt, map, map_prediction):
+        print(" ")
+        print(f"before one iteration of the game -> Robot at: ({location[0]}, {location[1]})")
+        print(dict_info_quality)
+        print("{0} is selected as a next robot direction".format(direction))
+
+        char = self.classNet.runNetwork(map_prediction)
+        estimated_digit = char.argmax()
+        
+        print("{0} is the predicted value based on the exploration so far".format(estimated_digit))
+
+        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
+        pos = ax1.imshow(map_gt)
+        pos = ax2.imshow(map)
+        pos = ax3.imshow(map_prediction, cmap='gray')
+        plt.show()
