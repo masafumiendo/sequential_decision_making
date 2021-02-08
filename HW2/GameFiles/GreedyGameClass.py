@@ -20,7 +20,7 @@ class GreedyGame(Game):
     def tick(self):
         self.iterations += 1
         # Generate an action for the robot
-        action = self.navigator.getAction(self.robot, self.exploredMap)
+        action = self.navigator.getAction(self.robot, self.exploredMap, self.truthMap)
         # Move the robot
         self.robot.move(action)
         # Update the explored map based on robot position

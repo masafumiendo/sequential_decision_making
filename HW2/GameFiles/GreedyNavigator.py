@@ -15,20 +15,23 @@ class GreedyNavigator:
         # init NN that estimates the world
         self.uNet = WorldEstimatingNetwork()
 
-    def getAction(self, robot, map):
+    def getAction(self, robot, map, map_gt):
         """ Greedily select a valid direction for the robot to travel
         Hint: The robot should look one step ahead and move to the location that gains the maximal information based on
         the neural network prediction.
         :return: direction
         """
 
-        # creates an estimate of what the world looks like before moving
+        # This loop shows how you can create a mask, an grid of 0s and 1s
+        # where 0s represent unexplored areas and 1s represent explored areas
+        # This mask is used by the world estimating network
         mask = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
                 if map[x, y] != 128:
                     mask[x, y] = 1
-        image = self.uNet.runNetwork(map, mask)
+        # creates an estimate of what the world looks like before moving
+        map_prediction = self.uNet.runNetwork(map, mask)
         # initialize dictionary
         dict_info_quality = {}
 
@@ -43,13 +46,15 @@ class GreedyNavigator:
         if location_curr[1] - 1 >= 0:
             dict_info_quality['up'] = 0
 
-        fig, (ax1, ax2) = plt.subplots(ncols=2)
-        pos = ax1.imshow(map)
-        pos = ax2.imshow(image, cmap='gray')
+        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
+        pos = ax1.imshow(map_gt)
+        pos = ax2.imshow(map)
+        pos = ax3.imshow(map_prediction, cmap='gray')
+        plt.show()
 
         # calculate info quality for possible movements
         for direction in dict_info_quality:
-            dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, image)
+            dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, map_prediction, mask)
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
         print(location_curr)
@@ -57,14 +62,14 @@ class GreedyNavigator:
         print(direction)
         return direction
 
-    def _calc_info_quality(self, location_curr, direction, image):
+    def _calc_info_quality(self, location_curr, direction, map_prediction, mask):
         """ Calculate information quality for the possible movement
-        Hint: Consider the values of the pixels in the prediction image.
+        Hint: Consider the values of the pixels in the predicted map.
         :return: info_quality
         """
 
         location_next = self._get_next_location(location_curr, direction)
-        info_quality = self._get_max_info(image, location_next)
+        info_quality = self._get_info(map_prediction, mask, location_next)
 
         return info_quality
 
@@ -90,8 +95,22 @@ class GreedyNavigator:
 
         return location_next
     
-    def _get_max_info(self, map, location):
-        """ Get maximum information at the given location
-        :return: max_info
+    def _get_info(self, map_prediction, mask, location):
+        """ Get information at the given location
+        :return: info_quality
         """
-    return max_info
+        info_quality = 0
+        # iterate through all nearby squares
+        for x in range(-1, 2):
+            for y in range(-1, 2):
+                # if the robot is off the map, do nothing
+                if location[0]+x > 27 or location[0]+x < 0 or location[1]+y > 27 or location[1]+y < 0:
+                    continue
+                # otherwise update info_quality if there are unexplored areas
+                else:
+                    if mask[location[0]+x, location[1]+y] == 0:
+                        info_quality += map_prediction[location[0]+x, location[1]+y]
+                    else:
+                        continue
+
+        return info_quality
