@@ -54,7 +54,7 @@ class GreedyNavigator:
 
         # calculate info quality for possible movements
         for direction in dict_info_quality:
-            dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, map_prediction, mask)
+            dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, mask, map, map_prediction)
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
         print(location_curr)
@@ -62,14 +62,14 @@ class GreedyNavigator:
         print(direction)
         return direction
 
-    def _calc_info_quality(self, location_curr, direction, map_prediction, mask):
+    def _calc_info_quality(self, location_curr, direction, mask, map, map_prediction):
         """ Calculate information quality for the possible movement
         Hint: Consider the values of the pixels in the predicted map.
         :return: info_quality
         """
 
         location_next = self._get_next_location(location_curr, direction)
-        info_quality = self._get_info(map_prediction, mask, location_next)
+        info_quality = self._get_info(mask, map, map_prediction, location_next)
 
         return info_quality
 
@@ -95,7 +95,7 @@ class GreedyNavigator:
 
         return location_next
     
-    def _get_info(self, map_prediction, mask, location):
+    def _get_info(self, mask, map, map_prediction, location):
         """ Get information at the given location
         :return: info_quality
         """
@@ -111,6 +111,6 @@ class GreedyNavigator:
                     if mask[location[0]+x, location[1]+y] == 0:
                         info_quality += map_prediction[location[0]+x, location[1]+y]
                     else:
-                        continue
+                        info_quality += map[location[0]+x, location[1]+y]
 
         return info_quality
