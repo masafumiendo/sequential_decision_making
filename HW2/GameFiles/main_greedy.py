@@ -7,6 +7,7 @@ Objective: main function to run greedy navigator
 
 import gzip
 import numpy as np
+import matplotlib.pyplot as plt
 from PIL import Image
 from RobotClass import Robot
 from GreedyGameClass import GreedyGame
@@ -15,7 +16,6 @@ from networkFolder.functionList import Map, WorldEstimatingNetwork, DigitClassif
 
 # Create a Map Class Object
 map = Map()
-map.getNewMap()
 map.getNewMap()
 # Get the current map from the Map Class
 data = map.map
@@ -32,7 +32,9 @@ robot = Robot(0, 0)
 navigator = GreedyNavigator()
 
 # Create a Game object, providing it with the map data, the goal location of the map, the navigator, and the robot
-game = GreedyGame(data, map.number, navigator, robot)
+specified_prob = 0.95
+flag_greedy = True
+game = GreedyGame(data, map.number, navigator, robot, specified_prob, flag_greedy)
 
 # This loop runs until the robot found the goal.
 while True:
@@ -43,9 +45,6 @@ while True:
         print(f"Found goal at time step: {game.getIteration()}!")
         break
 print(f"Final Score: {game.score}")
-
-# Show how much of the world has been explored
-im = Image.fromarray(np.uint8(game.exploredMap)).show()
 
 # Create the world estimating network
 uNet = WorldEstimatingNetwork()
@@ -65,15 +64,18 @@ for x in range(0, 28):
 # Creates an estimate of what the world looks like
 image = uNet.runNetwork(game.exploredMap, mask)
 
-# Show the image of the estimated world
-Image.fromarray(image).show()
-
-
 # Use the classification network on the estimated image
 # to get a guess of what "world" we are in (e.g., what the MNIST digit of the world)
 char = classNet.runNetwork(image)
 # get the most likely digit
 print(char.argmax())
+
+# show ground truth, explored, and predicted map
+fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
+pos = ax1.imshow(game.truthMap)
+pos = ax2.imshow(game.exploredMap)
+pos = ax3.imshow(image, cmap='gray')
+plt.show()
 
 # Get the next map to test your algorithm on.
 map.getNewMap()

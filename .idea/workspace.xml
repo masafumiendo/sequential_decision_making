@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GameClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GameClass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyGameClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyGameClass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/RobotClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/RobotClass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -190,7 +188,7 @@
       <workItem from="1612771015567" duration="106000" />
       <workItem from="1612780517096" duration="523000" />
       <workItem from="1612828536591" duration="1740000" />
-      <workItem from="1612843185381" duration="2807000" />
+      <workItem from="1612843185381" duration="10400000" />
     </task>
     <servers />
   </component>
@@ -221,13 +219,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/HW2/GameFiles/main_greedy.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -238,7 +229,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/sequential_decision_making$main_greedy.coverage" NAME="main_greedy Coverage Results" MODIFIED="1612846183829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
+    <SUITE FILE_PATH="coverage/sequential_decision_making$main_greedy.coverage" NAME="main_greedy Coverage Results" MODIFIED="1612854636178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
     <SUITE FILE_PATH="coverage/sequential_decision_making$main.coverage" NAME="main Coverage Results" MODIFIED="1612760367516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
   </component>
   <component name="editorHistoryManager">

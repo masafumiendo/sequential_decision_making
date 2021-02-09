@@ -16,7 +16,25 @@ class GreedyNavigator:
         self.uNet = WorldEstimatingNetwork()
         self.classNet = DigitClassificationNetwork()
 
-    def getAction(self, robot, map, map_gt):
+    def getActionShortest(self, robot, goal):
+        """ Select a valid direction for the robot to travel towards the goal position
+        :return: direction
+        """
+
+        location_curr = robot.getLoc()
+        # x-axis direction
+        if location_curr[0] - goal[0] > 0:
+            direction = 'left'
+        elif location_curr[0] - goal[0] < 0:
+            direction = 'right'
+        # y-axis direction
+        if location_curr[1] - goal[1] > 0:
+            direction = 'up'
+        elif location_curr[1] - goal[1] < 0:
+            direction = 'down'
+        return direction
+
+    def getActionGreedy(self, robot, map, map_gt):
         """ Greedily select a valid direction for the robot to travel
         Hint: The robot should look one step ahead and move to the location that gains the maximal information based on
         the neural network prediction.
@@ -53,7 +71,7 @@ class GreedyNavigator:
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
 
-        self._summarize_progress(location_curr, dict_info_quality, direction, map_gt, map, map_prediction)
+        # self._summarize_progress(location_curr, dict_info_quality, direction, map_gt, map, map_prediction)
 
         return direction
 
