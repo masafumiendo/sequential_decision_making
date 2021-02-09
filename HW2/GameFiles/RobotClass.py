@@ -17,14 +17,14 @@ class Robot:
     def move(self,direction):
         """ Move the robot while respecting bounds"""
         if direction == 'left':
-            self.xLoc = min(self.xLoc-1, self.xLim[1])
+            self.xLoc = max(self.xLoc-1, self.xLim[0])
         elif direction =='right':
-            self.xLoc = max(self.xLoc+1, self.xLim[0])
+            self.xLoc = min(self.xLoc+1, self.xLim[1])
         elif direction == 'down':
-            self.yLoc = max(self.yLoc+1, self.yLim[0])
+            self.yLoc = min(self.yLoc+1, self.yLim[1])
         # Up by default
         elif direction == 'up':
-            self.yLoc = min(self.yLoc-1, self.yLim[1])
+            self.yLoc = max(self.yLoc-1, self.yLim[0])
         else:
             raise ValueError(f"Robot received invalid direction: {direction}!")
 

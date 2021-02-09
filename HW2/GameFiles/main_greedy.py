@@ -59,8 +59,8 @@ classNet = DigitClassificationNetwork()
 mask = np.zeros((28, 28))
 for x in range(0, 28):
     for y in range(0, 28):
-        if game.exploredMap[x, y] != 128:
-            mask[x, y] = 1
+        if game.exploredMap[y, x] != 128:
+            mask[y, x] = 1
 
 # Creates an estimate of what the world looks like
 image = uNet.runNetwork(game.exploredMap, mask)

@@ -63,7 +63,7 @@ class Game:
                     continue
                 # Otherwise update the explored map with the actual value of the map
                 else:
-                    exploredMap[robot.getLoc()[0]+x, robot.getLoc()[1]+y] = truthMap[robot.getLoc()[0]+x, robot.getLoc()[1]+y]
+                    exploredMap[robot.getLoc()[1]+y, robot.getLoc()[0]+x] = truthMap[robot.getLoc()[1]+y, robot.getLoc()[0]+x]
 
     def _get_goal(self, digit):
         """

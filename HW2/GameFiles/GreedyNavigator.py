@@ -29,8 +29,8 @@ class GreedyNavigator:
         mask = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
-                if map[x, y] != 128:
-                    mask[x, y] = 1
+                if map[y, x] != 128:
+                    mask[y, x] = 1
         # creates an estimate of what the world looks like before moving
         map_prediction = self.uNet.runNetwork(map, mask)
         # initialize dictionary
@@ -104,8 +104,8 @@ class GreedyNavigator:
                 # otherwise update info_quality if there are unexplored areas
                 else:
                     # 0 is unexplored
-                    if mask[location[0]+x, location[1]+y] == 0:
-                        info_quality += map_prediction[location[0]+x, location[1]+y]
+                    if mask[location[1]+y, location[0]+x] == 0:
+                        info_quality += map_prediction[location[1]+y, location[0]+x]
                     else:
                         continue
 

@@ -30,8 +30,8 @@ class GreedyGame(Game):
         mask = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
-                if self.exploredMap[x, y] != 128:
-                    mask[x, y] = 1
+                if self.exploredMap[y, x] != 128:
+                    mask[y, x] = 1
         image = self.uNet.runNetwork(self.exploredMap, mask)
         # creates an estimate of what world we are in
         char = self.classNet.runNetwork(image)
