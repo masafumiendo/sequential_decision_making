@@ -33,8 +33,7 @@ navigator = GreedyNavigator()
 
 # Create a Game object, providing it with the map data, the goal location of the map, the navigator, and the robot
 specified_prob = 0.95
-flag_greedy = True
-game = GreedyGame(data, map.number, navigator, robot, specified_prob, flag_greedy)
+game = GreedyGame(data, map.number, navigator, robot, specified_prob)
 
 # This loop runs until the robot found the goal.
 while True:
