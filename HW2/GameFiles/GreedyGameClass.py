@@ -12,11 +12,11 @@ from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificati
 
 
 class GreedyGame(Game):
-    def __init__(self, truthMap, digit, navigator, robot, specified_prob, flag_greedy):
+    def __init__(self, truthMap, digit, navigator, robot, specified_prob):
         super().__init__(truthMap, digit, navigator, robot)
 
         self.specified_prob = specified_prob
-        self.flag_greedy = flag_greedy
+        self.flag_greedy = True
         self.uNet = WorldEstimatingNetwork()
         self.classNet = DigitClassificationNetwork()
         self.softmax = torch.nn.Softmax(dim=1)
