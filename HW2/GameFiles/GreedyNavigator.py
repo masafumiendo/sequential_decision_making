@@ -71,7 +71,7 @@ class GreedyNavigator:
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
 
-        # self._summarize_progress(location_curr, dict_info_quality, direction, map_gt, map, map_prediction)
+        self._summarize_progress(location_curr, dict_info_quality, direction, map_gt, map, map_prediction)
 
         return direction
 
@@ -82,7 +82,7 @@ class GreedyNavigator:
         """
 
         location_next = self._get_next_location(location_curr, direction)
-        info_quality = self._get_info(mask, map, map_prediction, location_next)
+        info_quality = self._get_info(map, map_prediction, location_next)
 
         return info_quality
 
@@ -107,27 +107,49 @@ class GreedyNavigator:
         location_next = (xLoc, yLoc)
 
         return location_next
-    
-    def _get_info(self, mask, map, map_prediction, location):
-        """ Get information at the given location
-        :return: info_quality
-        """
-        info_quality = 0
-        # iterate through all nearby squares
+
+    def _get_info(self, map, map_prediction, location):
+
+        # update map with predicted pixel values
         for x in range(-1, 2):
             for y in range(-1, 2):
                 # if the robot is off the map, do nothing
                 if location[0]+x > 27 or location[0]+x < 0 or location[1]+y > 27 or location[1]+y < 0:
                     continue
-                # otherwise update info_quality if there are unexplored areas
+                # Otherwise update the explored map with the predicted value of the map
                 else:
-                    # 0 is unexplored
-                    if mask[location[1]+y, location[0]+x] == 0:
-                        info_quality += map_prediction[location[1]+y, location[0]+x]
-                    else:
-                        continue
+                    map[location[1]+y, location[0]+x] = map_prediction[location[1]+y, location[0]+x]
 
-        return info_quality
+        # creates an mask for NN prediction
+        mask = np.zeros((28, 28))
+        for x in range(0, 28):
+            for y in range(0, 28):
+                if map[y, x] != 128:
+                    mask[y, x] = 1
+        # creates an estimate of what the world looks like after moving
+        map_hallucinate = self.uNet.runNetwork(map, mask)
+        char = self.classNet.runNetwork(map_hallucinate)
+
+    # def _get_info(self, mask, map, map_prediction, location):
+    #     """ Get information at the given location
+    #     :return: info_quality
+    #     """
+    #     info_quality = 0
+    #     # iterate through all nearby squares
+    #     for x in range(-1, 2):
+    #         for y in range(-1, 2):
+    #             # if the robot is off the map, do nothing
+    #             if location[0]+x > 27 or location[0]+x < 0 or location[1]+y > 27 or location[1]+y < 0:
+    #                 continue
+    #             # otherwise update info_quality if there are unexplored areas
+    #             else:
+    #                 # 0 is unexplored
+    #                 if mask[location[1]+y, location[0]+x] == 0:
+    #                     info_quality += map_prediction[location[1]+y, location[0]+x]
+    #                 else:
+    #                     continue
+    #
+    #     return info_quality
 
     def _summarize_progress(self, location, dict_info_quality, direction, map_gt, map, map_prediction):
         print(" ")
