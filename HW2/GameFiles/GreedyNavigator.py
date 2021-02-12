@@ -8,6 +8,7 @@ Objective: Implement a greedy solver for the discrete problem
 import numpy as np
 from matplotlib import pyplot as plt
 from PIL import Image
+import torch
 from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificationNetwork
 
 class GreedyNavigator:
@@ -15,6 +16,7 @@ class GreedyNavigator:
         # init NN that estimates the world
         self.uNet = WorldEstimatingNetwork()
         self.classNet = DigitClassificationNetwork()
+        self.softmax = torch.nn.Softmax(dim=1)
 
     def getActionShortest(self, robot, goal):
         """ Select a valid direction for the robot to travel towards the goal position
@@ -82,7 +84,7 @@ class GreedyNavigator:
         """
 
         location_next = self._get_next_location(location_curr, direction)
-        info_quality = self._get_info(map, map_prediction, location_next)
+        info_quality = self._get_info(mask, map, map_prediction, location_next)
 
         return info_quality
 
@@ -108,8 +110,9 @@ class GreedyNavigator:
 
         return location_next
 
-    def _get_info(self, map, map_prediction, location):
+    def _get_info(self, mask, map, map_prediction, location):
 
+        map_ = np.copy(map)
         # update map with predicted pixel values
         for x in range(-1, 2):
             for y in range(-1, 2):
@@ -118,17 +121,62 @@ class GreedyNavigator:
                     continue
                 # Otherwise update the explored map with the predicted value of the map
                 else:
-                    map[location[1]+y, location[0]+x] = map_prediction[location[1]+y, location[0]+x]
+                    # 0 is unexplored
+                    if mask[location[1]+y, location[0]+x] == 0:
+                        map_[location[1]+y, location[0]+x] = map_prediction[location[1]+y, location[0]+x]
+                    else:
+                        continue
 
         # creates an mask for NN prediction
         mask = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
-                if map[y, x] != 128:
+                if map_[y, x] != 128:
                     mask[y, x] = 1
         # creates an estimate of what the world looks like after moving
-        map_hallucinate = self.uNet.runNetwork(map, mask)
-        char = self.classNet.runNetwork(map_hallucinate)
+        map_hallucinate = self.uNet.runNetwork(map_, mask)
+        # get a guess of what "world" we are in before and after taking action
+        char_bef_action = self.classNet.runNetwork(map_prediction)
+        char_aft_action = self.classNet.runNetwork(map_hallucinate)
+
+        # calculate probability
+        prob_bef = self.softmax(torch.from_numpy(char_bef_action).clone()).numpy()
+        prob_aft = self.softmax(torch.from_numpy(char_aft_action).clone()).numpy()
+
+        # calculate entropy
+        entropy_bef = self._calc_entropy(prob_bef[0])
+        entropy_aft = self._calc_entropy(prob_aft[0])
+        # calculate information gain
+        info_quality = entropy_bef - entropy_aft
+
+        return info_quality
+
+    def _calc_entropy(self, prob):
+        """ Calculate entropy from probabilities
+        :return:
+        """
+        entropy = 0
+        for prob_ in prob:
+            entropy += - np.log2(prob_)
+
+        return entropy
+
+    def _summarize_progress(self, location, dict_info_quality, direction, map_gt, map, map_prediction):
+        print(" ")
+        print(f"before one iteration of the game -> Robot at: ({location[0]}, {location[1]})")
+        print(dict_info_quality)
+        print("{0} is selected as a next robot direction".format(direction))
+
+        char = self.classNet.runNetwork(map_prediction)
+        estimated_digit = char.argmax()
+        
+        print("{0} is the predicted value based on the exploration so far".format(estimated_digit))
+
+        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
+        pos = ax1.imshow(map_gt)
+        pos = ax2.imshow(map)
+        pos = ax3.imshow(map_prediction, cmap='gray')
+        plt.show()
 
     # def _get_info(self, mask, map, map_prediction, location):
     #     """ Get information at the given location
@@ -150,20 +198,3 @@ class GreedyNavigator:
     #                     continue
     #
     #     return info_quality
-
-    def _summarize_progress(self, location, dict_info_quality, direction, map_gt, map, map_prediction):
-        print(" ")
-        print(f"before one iteration of the game -> Robot at: ({location[0]}, {location[1]})")
-        print(dict_info_quality)
-        print("{0} is selected as a next robot direction".format(direction))
-
-        char = self.classNet.runNetwork(map_prediction)
-        estimated_digit = char.argmax()
-        
-        print("{0} is the predicted value based on the exploration so far".format(estimated_digit))
-
-        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
-        pos = ax1.imshow(map_gt)
-        pos = ax2.imshow(map)
-        pos = ax3.imshow(map_prediction, cmap='gray')
-        plt.show()
