@@ -56,7 +56,7 @@ class GreedyNavigator:
         # initialize dictionary
         dict_info_quality = {}
 
-        # add possible movements w/ zero info quality
+        # add possible movements w/ init.
         location_curr = robot.getLoc()
         if location_curr[0] - 1 >= 0:
             dict_info_quality['left'] = 0
@@ -70,6 +70,8 @@ class GreedyNavigator:
         # calculate info quality for possible movements
         for direction in dict_info_quality:
             dict_info_quality[direction] = self._calc_info_quality(location_curr, direction, mask, map, map_prediction)
+        # remove the direction where no new information can be obtained
+        dict_info_quality = {k: dict_info_quality[k] for k in dict_info_quality if not np.isnan(dict_info_quality[k])}
         # determine direction that gains the maximal information
         direction = max(dict_info_quality, key=dict_info_quality.get)
 
@@ -147,7 +149,10 @@ class GreedyNavigator:
         entropy_bef = self._calc_entropy(prob_bef[0])
         entropy_aft = self._calc_entropy(prob_aft[0])
         # calculate information gain
-        info_quality = entropy_bef - entropy_aft
+        if entropy_bef == entropy_aft:
+            info_quality = np.nan
+        else:
+            info_quality = entropy_bef - entropy_aft
 
         return info_quality
 

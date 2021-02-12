@@ -16,6 +16,7 @@ from networkFolder.functionList import Map, WorldEstimatingNetwork, DigitClassif
 
 # Create a Map Class Object
 map = Map()
+map.getNewMap()
 # Get the current map from the Map Class
 data = map.map
 
