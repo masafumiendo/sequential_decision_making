@@ -5,6 +5,8 @@ Version: 1.0
 Objective: Implement a greedy solver for the discrete problem
 """
 
+import copy
+
 import numpy as np
 from matplotlib import pyplot as plt
 import torch
@@ -79,7 +81,7 @@ class GreedyNavigator:
 
         # remove the direction where no new information can be obtained
         dict_info_gain = {k: dict_info_gain[k] for k in dict_info_gain if not np.isnan(dict_info_gain[k])}
-        
+
         # determine direction that gains the maximal information
         direction = max(dict_info_gain, key=dict_info_gain.get)
 
@@ -121,13 +123,13 @@ class GreedyNavigator:
                         continue
 
         # creates an mask for NN prediction
-        mask = np.zeros((28, 28))
+        mask_ = np.zeros((28, 28))
         for x in range(0, 28):
             for y in range(0, 28):
                 if map_[y, x] != 128:
-                    mask[y, x] = 1
+                    mask_[y, x] = 1
         # creates an estimate of what the world looks like after moving
-        map_hallucinate = self.uNet.runNetwork(map_, mask)
+        map_hallucinate = self.uNet.runNetwork(map_, mask_)
 
         # get a guess of what "world" we are in
         char = self.classNet.runNetwork(map_hallucinate)
@@ -140,7 +142,7 @@ class GreedyNavigator:
 
     def _calc_entropy(self, prob):
         """ Calculate entropy from probabilities
-        :return:
+        :return: entropy
         """
         entropy = 0
         for prob_ in prob:
