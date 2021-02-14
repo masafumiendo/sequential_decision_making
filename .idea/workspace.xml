@@ -4,7 +4,6 @@
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,7 +190,7 @@
       <workItem from="1612893842506" duration="3818000" />
       <workItem from="1612994092011" duration="2194000" />
       <workItem from="1613082341973" duration="7040000" />
-      <workItem from="1613278612243" duration="1146000" />
+      <workItem from="1613278612243" duration="3664000" />
     </task>
     <servers />
   </component>
@@ -222,13 +221,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/HW2/GameFiles/main_greedy.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
