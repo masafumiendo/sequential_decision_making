@@ -79,6 +79,7 @@ class GreedyNavigator:
 
         # remove the direction where no new information can be obtained
         dict_info_gain = {k: dict_info_gain[k] for k in dict_info_gain if not np.isnan(dict_info_gain[k])}
+        
         # determine direction that gains the maximal information
         direction = max(dict_info_gain, key=dict_info_gain.get)
 
