@@ -188,24 +188,3 @@ class GreedyNavigator:
         pos = ax2.imshow(map)
         pos = ax3.imshow(map_prediction, cmap='gray')
         plt.show()
-
-    # def _get_info(self, mask, map, map_prediction, location):
-    #     """ Get information at the given location
-    #     :return: info_quality
-    #     """
-    #     info_quality = 0
-    #     # iterate through all nearby squares
-    #     for x in range(-1, 2):
-    #         for y in range(-1, 2):
-    #             # if the robot is off the map, do nothing
-    #             if location[0]+x > 27 or location[0]+x < 0 or location[1]+y > 27 or location[1]+y < 0:
-    #                 continue
-    #             # otherwise update info_quality if there are unexplored areas
-    #             else:
-    #                 # 0 is unexplored
-    #                 if mask[location[1]+y, location[0]+x] == 0:
-    #                     info_quality += map_prediction[location[1]+y, location[0]+x]
-    #                 else:
-    #                     continue
-    #
-    #     return info_quality
