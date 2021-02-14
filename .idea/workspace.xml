@@ -158,7 +158,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW2/GameFiles/main_greedy_old.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -190,7 +190,8 @@
       <workItem from="1612843185381" duration="10552000" />
       <workItem from="1612893842506" duration="3818000" />
       <workItem from="1612994092011" duration="2194000" />
-      <workItem from="1613082341973" duration="7007000" />
+      <workItem from="1613082341973" duration="7040000" />
+      <workItem from="1613278612243" duration="1146000" />
     </task>
     <servers />
   </component>
@@ -224,8 +225,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/HW2/GameFiles/main_greedy.py</url>
-          <line>42</line>
-          <option name="timeStamp" value="1" />
+          <line>37</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -238,7 +239,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/sequential_decision_making$main_greedy.coverage" NAME="main_greedy Coverage Results" MODIFIED="1613092024621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
+    <SUITE FILE_PATH="coverage/sequential_decision_making$main_greedy.coverage" NAME="main_greedy Coverage Results" MODIFIED="1613283884232" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
     <SUITE FILE_PATH="coverage/sequential_decision_making$main.coverage" NAME="main Coverage Results" MODIFIED="1612760367516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/HW2/GameFiles" />
   </component>
   <component name="editorHistoryManager">

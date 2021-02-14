@@ -7,7 +7,6 @@ Objective: Implement a greedy solver for the discrete problem
 
 import numpy as np
 from matplotlib import pyplot as plt
-from PIL import Image
 import torch
 from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificationNetwork
 
