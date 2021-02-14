@@ -20,6 +20,8 @@ def run_greedy(map, specified_prob):
     data = map.map
     # init robot and navigator
     robot = Robot(0, 0)
+    path_x = np.array(robot.xLoc)
+    path_y = np.array(robot.yLoc)
     navigator = GreedyNavigator()
     # init game class w/ user-specified probability
     game = GreedyGame(data, map.number, navigator, robot, specified_prob)
@@ -35,6 +37,9 @@ def run_greedy(map, specified_prob):
         found_goal = game.tick()
         print(" ")
         print(f"after one iteration of the game -> {game.getIteration()}: Robot at: ({robot.xLoc}, {robot.yLoc}), Score = {game.getScore()}")
+        # add path
+        path_x = np.append(path_x, robot.xLoc)
+        path_y = np.append(path_y, robot.yLoc)
         if found_goal:
             print(f"Found goal at time step: {game.getIteration()}!")
             break
@@ -61,6 +66,13 @@ def run_greedy(map, specified_prob):
     pos = ax3.imshow(image, cmap='gray')
     plt.show()
 
+    # show explored map with robot's trajectory
+    fig, (ax1, ax2) = plt.subplots(ncols=2)
+    ax1.plot(path_x, path_y, color='red')
+    ax1.imshow(game.exploredMap, cmap='gray')
+    ax2.imshow(image, cmap='gray')
+    plt.show()
+
 if __name__ == '__main__':
     # init map and prob
     map = Map()
@@ -68,3 +80,8 @@ if __name__ == '__main__':
 
     # run exploration
     run_greedy(map, specified_prob)
+
+    # # run exploration
+    # map.getNewMap()
+    # map.getNewMap()
+    # run_greedy(map, specified_prob)
