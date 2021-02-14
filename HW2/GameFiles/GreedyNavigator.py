@@ -85,8 +85,6 @@ class GreedyNavigator:
         # determine direction that gains the maximal information
         direction = max(dict_info_gain, key=dict_info_gain.get)
 
-        self._summarize_progress(location_curr, dict_info_gain, direction, map_gt, map, map_prediction)
-
         return direction
 
     def _get_entropy_curr(self, map_prediction):
@@ -146,7 +144,7 @@ class GreedyNavigator:
         """
         entropy = 0
         for prob_ in prob:
-            entropy += - np.log2(prob_)
+            entropy += - prob_ * np.log2(prob_)
 
         return entropy
 
