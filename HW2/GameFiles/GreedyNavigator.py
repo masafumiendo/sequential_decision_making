@@ -33,6 +33,7 @@ class GreedyNavigator:
             direction = 'up'
         elif location_curr[1] - goal[1] < 0:
             direction = 'down'
+
         return direction
 
     def getActionGreedy(self, robot, map, map_gt):
