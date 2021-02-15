@@ -6,7 +6,7 @@ Objective: Implement a greedy solver for the discrete problem
 """
 
 import copy
-
+from random import randint
 import numpy as np
 from matplotlib import pyplot as plt
 import torch
@@ -82,10 +82,29 @@ class GreedyNavigator:
         # remove the direction where no new information can be obtained
         dict_info_gain = {k: dict_info_gain[k] for k in dict_info_gain if not np.isnan(dict_info_gain[k])}
 
-        # determine direction that gains the maximal information
-        direction = max(dict_info_gain, key=dict_info_gain.get)
+        if len(dict_info_gain) > 0:
+            # determine direction that gains the maximal information
+            direction = max(dict_info_gain, key=dict_info_gain.get)
+            flag_stuck = False
+        else:
+            direction = None
+            while direction is None:
+                randNumb = randint(0, 3)
+                if randNumb == 0:
+                    if location_curr[0] - 1 >= 0:
+                        direction = 'left'
+                if randNumb == 1:
+                    if location_curr[0] + 1 <= 27:
+                        direction = 'right'
+                if randNumb == 2:
+                    if location_curr[1] + 1 <= 27:
+                        direction = 'down'
+                if randNumb == 3:
+                    if location_curr[1] - 1 >= 0:
+                        direction = 'up'
+            flag_stuck = True
 
-        return direction
+        return direction, flag_stuck
 
     def _get_entropy_curr(self, map_prediction):
         """ Get entropy for the current state and estimated map

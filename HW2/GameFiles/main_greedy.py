@@ -42,6 +42,7 @@ def run_greedy(map, specified_prob):
         path_y = np.append(path_y, robot.yLoc)
         if found_goal:
             print(f"Found goal at time step: {game.getIteration()}!")
+            print(f"Number of stucked: {game.num_stuck}")
             break
     print(f"Final Score: {game.score}")
 

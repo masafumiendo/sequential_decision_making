@@ -20,12 +20,15 @@ class GreedyGame(Game):
         self.uNet = WorldEstimatingNetwork()
         self.classNet = DigitClassificationNetwork()
         self.softmax = torch.nn.Softmax(dim=1)
+        self.num_stuck = 0
 
     def tick(self):
         self.iterations += 1
         # Generate an action for the robot
         if self.flag_greedy:
-            action = self.navigator.getActionGreedy(self.robot, self.exploredMap)
+            action, flag_stuck = self.navigator.getActionGreedy(self.robot, self.exploredMap)
+            if flag_stuck:
+                self.num_stuck += 1
         else:
             action = self.navigator.getActionShortest(self.robot, self._goal)
         # Move the robot
