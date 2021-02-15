@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyGameClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyGameClass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +193,7 @@
       <workItem from="1613287595152" duration="446000" />
       <workItem from="1613294575691" duration="5718000" />
       <workItem from="1613312859363" duration="8359000" />
-      <workItem from="1613357982086" duration="1095000" />
+      <workItem from="1613357982086" duration="1985000" />
     </task>
     <servers />
   </component>
