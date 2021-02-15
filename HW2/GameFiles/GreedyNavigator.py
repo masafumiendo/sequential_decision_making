@@ -38,6 +38,31 @@ class GreedyNavigator:
 
         return direction
 
+    def getActionRandom(self, robot):
+        """ Select a valid direction for the robot to travel randomly
+        :return: direction
+        """
+        direction = None
+
+        while direction is None:
+
+            randNumb = randint(0,3)
+
+            if randNumb == 0:
+                if robot.getLoc()[0] - 1 >= 0:
+                    direction = 'left'
+            if randNumb == 1:
+                if robot.getLoc()[0] + 1 <= 27:
+                    direction = 'right'
+            if randNumb == 2:
+                if robot.getLoc()[1] + 1 <= 27:
+                    direction = 'down'
+            if randNumb == 3:
+                if robot.getLoc()[1] - 1 >= 0:
+                    direction = 'up'
+
+        return direction
+
     def getActionGreedy(self, robot, map):
         """ Greedily select a valid direction for the robot to travel
         Hint: The robot should look one step ahead and move to the location that gains the maximal information based on
@@ -87,21 +112,7 @@ class GreedyNavigator:
             direction = max(dict_info_gain, key=dict_info_gain.get)
             flag_stuck = False
         else:
-            direction = None
-            while direction is None:
-                randNumb = randint(0, 3)
-                if randNumb == 0:
-                    if location_curr[0] - 1 >= 0:
-                        direction = 'left'
-                if randNumb == 1:
-                    if location_curr[0] + 1 <= 27:
-                        direction = 'right'
-                if randNumb == 2:
-                    if location_curr[1] + 1 <= 27:
-                        direction = 'down'
-                if randNumb == 3:
-                    if location_curr[1] - 1 >= 0:
-                        direction = 'up'
+            direction = self.getActionRandom(robot)
             flag_stuck = True
 
         return direction, flag_stuck
