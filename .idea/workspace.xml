@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/GreedyNavigator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/main_epsilon_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/main_epsilon_greedy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/fig/boxplot_reward_7_greedy.png" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/fig/boxplot_reward_7_greedy.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW2/fig/boxplot_runtime_7_greedy.png" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/fig/boxplot_runtime_7_greedy.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/fig/map_explore_7_epsilon_greedy.png" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/fig/map_explore_7_epsilon_greedy.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW2/fig/map_pred_7_epsilon_greedy.png" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/fig/map_pred_7_epsilon_greedy.png" afterDir="false" />
     </list>
@@ -221,7 +218,8 @@
       <workItem from="1613294575691" duration="5718000" />
       <workItem from="1613312859363" duration="8359000" />
       <workItem from="1613357982086" duration="7602000" />
-      <workItem from="1613365954516" duration="6185000" />
+      <workItem from="1613365954516" duration="6539000" />
+      <workItem from="1613412830807" duration="1239000" />
     </task>
     <servers />
   </component>

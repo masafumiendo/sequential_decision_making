@@ -16,6 +16,8 @@ from EpsilonGreedyGameClass import EpsilonGreedyGame
 from GreedyNavigator import GreedyNavigator
 from networkFolder.functionList import Map, WorldEstimatingNetwork, DigitClassificationNetwork
 
+flag_show = False
+
 def run_greedy(map, epsilon, specified_prob):
 
     # get map
@@ -65,26 +67,27 @@ def run_greedy(map, epsilon, specified_prob):
     # get the most likely digit
     print(char.argmax())
 
-    # show ground truth, explored, and predicted map
-    # ground truth
-    fig, ax = plt.subplots()
-    ax.imshow(game.truthMap, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_gt_' + str(map.number) + '_epsilon_greedy.png')
-    # plt.show()
-    # explored w/ a robot's trajectory
-    fig, ax = plt.subplots()
-    ax.plot(path_x, path_y, color='red')
-    ax.imshow(game.exploredMap, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_explore_' + str(map.number) + '_epsilon_greedy.png')
-    # plt.show()
-    # predicted
-    fig, ax = plt.subplots()
-    ax.imshow(image, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_pred_' + str(map.number) + '_epsilon_greedy.png')
-    # plt.show()
+    if flag_show:
+        # show ground truth, explored, and predicted map
+        # ground truth
+        fig, ax = plt.subplots()
+        ax.imshow(game.truthMap, cmap='gray')
+        plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+        plt.savefig('../fig/map_gt_' + str(map.number) + '_epsilon_greedy.png')
+        plt.show()
+        # explored w/ a robot's trajectory
+        fig, ax = plt.subplots()
+        ax.plot(path_x, path_y, color='red')
+        ax.imshow(game.exploredMap, cmap='gray')
+        plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+        plt.savefig('../fig/map_explore_' + str(map.number) + '_epsilon_greedy.png')
+        plt.show()
+        # predicted
+        fig, ax = plt.subplots()
+        ax.imshow(image, cmap='gray')
+        plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+        plt.savefig('../fig/map_pred_' + str(map.number) + '_epsilon_greedy.png')
+        plt.show()
 
     return game.score, elapsed_time
 
@@ -103,24 +106,25 @@ if __name__ == '__main__':
             reward_list[row][column] = reward
             runtime_list[row][column] = runtime
 
-    sns.set()
-    fig, ax = plt.subplots(figsize=(12, 8))
-    bp = ax.boxplot((reward_list[0], reward_list[1], reward_list[2], reward_list[3]))
-    ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
-    ax.yaxis.grid(True)
-    plt.xlabel('epsilon', fontsize=18)
-    plt.ylabel('reward', fontsize=18)
-    plt.tick_params(labelsize=18)
-    plt.savefig('../fig/boxplot_reward_' + str(map.number) + '_greedy.png')
-    plt.show()
+    if flag_show:
+        sns.set()
+        fig, ax = plt.subplots(figsize=(12, 8))
+        bp = ax.boxplot((reward_list[0], reward_list[1], reward_list[2], reward_list[3]))
+        ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
+        ax.yaxis.grid(True)
+        plt.xlabel('epsilon', fontsize=18)
+        plt.ylabel('reward', fontsize=18)
+        plt.tick_params(labelsize=18)
+        plt.savefig('../fig/boxplot_reward_' + str(map.number) + '_greedy.png')
+        plt.show()
 
-    sns.set()
-    fig, ax = plt.subplots(figsize=(12, 8))
-    bp = ax.boxplot((runtime_list[0], runtime_list[1], runtime_list[2], runtime_list[3]))
-    ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
-    ax.yaxis.grid(True)
-    plt.xlabel('epsilon', fontsize=18)
-    plt.ylabel('running time [sec]', fontsize=18)
-    plt.tick_params(labelsize=18)
-    plt.savefig('../fig/boxplot_runtime_' + str(map.number) + '_greedy.png')
-    plt.show()
+        sns.set()
+        fig, ax = plt.subplots(figsize=(12, 8))
+        bp = ax.boxplot((runtime_list[0], runtime_list[1], runtime_list[2], runtime_list[3]))
+        ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
+        ax.yaxis.grid(True)
+        plt.xlabel('epsilon', fontsize=18)
+        plt.ylabel('running time [sec]', fontsize=18)
+        plt.tick_params(labelsize=18)
+        plt.savefig('../fig/boxplot_runtime_' + str(map.number) + '_greedy.png')
+        plt.show()
