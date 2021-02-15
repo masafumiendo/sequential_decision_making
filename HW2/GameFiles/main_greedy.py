@@ -60,17 +60,24 @@ def run_greedy(map, specified_prob):
     print(char.argmax())
 
     # show ground truth, explored, and predicted map
-    fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
-    pos = ax1.imshow(game.truthMap)
-    pos = ax2.imshow(game.exploredMap)
-    pos = ax3.imshow(image, cmap='gray')
+    # ground truth
+    fig, ax = plt.subplots()
+    ax.imshow(game.truthMap, cmap='gray')
+    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    plt.savefig('../fig/map_gt_' + str(map.number) + '_greedy.png')
     plt.show()
-
-    # show explored map with robot's trajectory
-    fig, (ax1, ax2) = plt.subplots(ncols=2)
-    ax1.plot(path_x, path_y, color='red')
-    ax1.imshow(game.exploredMap, cmap='gray')
-    ax2.imshow(image, cmap='gray')
+    # explored w/ a robot's trajectory
+    fig, ax = plt.subplots()
+    ax.plot(path_x, path_y, color='red')
+    ax.imshow(game.exploredMap, cmap='gray')
+    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    plt.savefig('../fig/map_explore_' + str(map.number) + '_greedy.png')
+    plt.show()
+    # predicted
+    fig, ax = plt.subplots()
+    ax.imshow(image, cmap='gray')
+    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    plt.savefig('../fig/map_pred_' + str(map.number) + '_greedy.png')
     plt.show()
 
 if __name__ == '__main__':
@@ -81,7 +88,7 @@ if __name__ == '__main__':
     # run exploration
     run_greedy(map, specified_prob)
 
-    # # run exploration
-    # map.getNewMap()
-    # map.getNewMap()
-    # run_greedy(map, specified_prob)
+    # run exploration
+    map.getNewMap()
+    map.getNewMap()
+    run_greedy(map, specified_prob)

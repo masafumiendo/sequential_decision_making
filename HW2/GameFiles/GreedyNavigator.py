@@ -38,7 +38,7 @@ class GreedyNavigator:
 
         return direction
 
-    def getActionGreedy(self, robot, map, map_gt):
+    def getActionGreedy(self, robot, map):
         """ Greedily select a valid direction for the robot to travel
         Hint: The robot should look one step ahead and move to the location that gains the maximal information based on
         the neural network prediction.
@@ -84,8 +84,6 @@ class GreedyNavigator:
 
         # determine direction that gains the maximal information
         direction = max(dict_info_gain, key=dict_info_gain.get)
-
-        self._summarize_progress(location_curr, dict_info_gain, direction, map_gt, map, map_prediction)
 
         return direction
 
@@ -183,8 +181,8 @@ class GreedyNavigator:
         print(self.softmax(torch.from_numpy(char).clone()).numpy())
         print("{0} is the predicted value based on the exploration so far".format(estimated_digit))
 
-        # fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
-        # pos = ax1.imshow(map_gt)
-        # pos = ax2.imshow(map)
-        # pos = ax3.imshow(map_prediction, cmap='gray')
-        # plt.show()
+        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
+        pos = ax1.imshow(map_gt)
+        pos = ax2.imshow(map)
+        pos = ax3.imshow(map_prediction, cmap='gray')
+        plt.show()

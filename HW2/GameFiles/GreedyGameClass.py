@@ -25,7 +25,7 @@ class GreedyGame(Game):
         self.iterations += 1
         # Generate an action for the robot
         if self.flag_greedy:
-            action = self.navigator.getActionGreedy(self.robot, self.exploredMap, self.truthMap)
+            action = self.navigator.getActionGreedy(self.robot, self.exploredMap)
         else:
             action = self.navigator.getActionShortest(self.robot, self._goal)
         # Move the robot
