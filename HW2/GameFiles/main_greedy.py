@@ -84,12 +84,14 @@ def run_greedy(map, specified_prob):
 if __name__ == '__main__':
     # init map and prob
     map = Map()
-    specified_prob = 0.95
+    specified_prob = 0.8
 
     # run exploration
     run_greedy(map, specified_prob)
 
+    map.getNewMap()
+    map.getNewMap()
+    map.getNewMap()
+
     # run exploration
-    map.getNewMap()
-    map.getNewMap()
     run_greedy(map, specified_prob)

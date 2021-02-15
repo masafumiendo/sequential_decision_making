@@ -5,16 +5,18 @@ Version: 2.0
 Objective: main function to run epsilon-greedy navigator
 """
 
+import time
 import gzip
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from PIL import Image
 from RobotClass import Robot
 from EpsilonGreedyGameClass import EpsilonGreedyGame
 from GreedyNavigator import GreedyNavigator
 from networkFolder.functionList import Map, WorldEstimatingNetwork, DigitClassificationNetwork
 
-def run_greedy(map, epsilon, decay, specified_prob):
+def run_greedy(map, epsilon, specified_prob):
 
     # get map
     data = map.map
@@ -24,7 +26,7 @@ def run_greedy(map, epsilon, decay, specified_prob):
     path_y = np.array(robot.yLoc)
     navigator = GreedyNavigator()
     # init game class w/ user-specified probability
-    game = EpsilonGreedyGame(data, map.number, navigator, robot, epsilon, decay, specified_prob)
+    game = EpsilonGreedyGame(data, map.number, navigator, robot, epsilon, specified_prob)
     # init networks
     uNet = WorldEstimatingNetwork()
     classNet = DigitClassificationNetwork()
@@ -33,6 +35,7 @@ def run_greedy(map, epsilon, decay, specified_prob):
     print(map.number)
 
     # run game until the robot found the goal
+    start = time.time()
     while True:
         found_goal = game.tick()
         print(" ")
@@ -45,6 +48,8 @@ def run_greedy(map, epsilon, decay, specified_prob):
             print(f"Number of stucked: {game.num_stuck}")
             break
     print(f"Final Score: {game.score}")
+
+    elapsed_time = time.time() - start
 
     # create mask
     mask = np.zeros((28, 28))
@@ -65,33 +70,55 @@ def run_greedy(map, epsilon, decay, specified_prob):
     fig, ax = plt.subplots()
     ax.imshow(game.truthMap, cmap='gray')
     plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_gt_' + str(map.number) + '_greedy.png')
-    plt.show()
+    plt.savefig('../fig/map_gt_' + str(map.number) + '_epsilon_greedy.png')
+    # plt.show()
     # explored w/ a robot's trajectory
     fig, ax = plt.subplots()
     ax.plot(path_x, path_y, color='red')
     ax.imshow(game.exploredMap, cmap='gray')
     plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_explore_' + str(map.number) + '_greedy.png')
-    plt.show()
+    plt.savefig('../fig/map_explore_' + str(map.number) + '_epsilon_greedy.png')
+    # plt.show()
     # predicted
     fig, ax = plt.subplots()
     ax.imshow(image, cmap='gray')
     plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_pred_' + str(map.number) + '_greedy.png')
-    plt.show()
+    plt.savefig('../fig/map_pred_' + str(map.number) + '_epsilon_greedy.png')
+    # plt.show()
+
+    return game.score, elapsed_time
 
 if __name__ == '__main__':
     # init map and prob
     map = Map()
-    epsilon = 1
-    decay = 1/15
-    specified_prob = 0.95
+    epsilon = [0, 0.01, 0.1, 0.2]
+    specified_prob = 0.8
+    reward_list = np.zeros((len(epsilon), 10))
+    runtime_list = np.zeros((len(epsilon), 10))
 
-    # run exploration
-    run_greedy(map, epsilon, decay, specified_prob)
+    for row, epsilon_ in enumerate(epsilon):
+        for column in range(10):
+            # run exploration
+            reward, runtime = run_greedy(map, epsilon_, specified_prob)
+            reward_list[row][column] = reward
+            runtime_list[row][column] = runtime
 
-    # run exploration
-    map.getNewMap()
-    map.getNewMap()
-    run_greedy(map, epsilon, decay, specified_prob)
+    sns.set()
+    fig, ax = plt.subplots(figsize=(12, 8))
+    bp = ax.boxplot((reward_list[0], reward_list[1], reward_list[2], reward_list[3]))
+    ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
+    ax.yaxis.grid(True)
+    plt.xlabel('epsilon')
+    plt.ylabel('reward')
+    plt.savefig('../fig/boxplot_reward_' + str(map.number) + '_greedy.png')
+    plt.show()
+
+    sns.set()
+    fig, ax = plt.subplots(figsize=(12, 8))
+    bp = ax.boxplot((runtime_list[0], runtime_list[1], runtime_list[2], runtime_list[3]))
+    ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
+    ax.yaxis.grid(True)
+    plt.xlabel('epsilon')
+    plt.ylabel('running time [sec]')
+    plt.savefig('../fig/boxplot_runtime_' + str(map.number) + '_greedy.png')
+    plt.show()

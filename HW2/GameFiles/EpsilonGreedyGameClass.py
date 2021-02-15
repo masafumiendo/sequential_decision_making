@@ -12,7 +12,7 @@ from networkFolder.functionList import WorldEstimatingNetwork, DigitClassificati
 
 
 class EpsilonGreedyGame(Game):
-    def __init__(self, truthMap, digit, navigator, robot, epsilon, decay, specified_prob):
+    def __init__(self, truthMap, digit, navigator, robot, epsilon, specified_prob):
         super().__init__(truthMap, digit, navigator, robot)
 
         self.specified_prob = specified_prob
@@ -22,10 +22,8 @@ class EpsilonGreedyGame(Game):
         self.softmax = torch.nn.Softmax(dim=1)
         self.num_stuck = 0
         self.epsilon = epsilon
-        self.decay = decay
 
     def tick(self):
-        self.epsilon = self.epsilon * np.exp(- self.decay * self.iterations)
         self.iterations += 1
         # Generate an action for the robot
         if self.flag_greedy:
