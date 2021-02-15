@@ -90,7 +90,7 @@ def run_greedy(map, epsilon, specified_prob):
 
 if __name__ == '__main__':
     # init map and prob
-    map = Map()
+    map = Map() # 7
     epsilon = [0, 0.01, 0.1, 0.2]
     specified_prob = 0.8
     reward_list = np.zeros((len(epsilon), 10))
@@ -108,8 +108,9 @@ if __name__ == '__main__':
     bp = ax.boxplot((reward_list[0], reward_list[1], reward_list[2], reward_list[3]))
     ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
     ax.yaxis.grid(True)
-    plt.xlabel('epsilon')
-    plt.ylabel('reward')
+    plt.xlabel('epsilon', fontsize=18)
+    plt.ylabel('reward', fontsize=18)
+    plt.tick_params(labelsize=18)
     plt.savefig('../fig/boxplot_reward_' + str(map.number) + '_greedy.png')
     plt.show()
 
@@ -118,7 +119,8 @@ if __name__ == '__main__':
     bp = ax.boxplot((runtime_list[0], runtime_list[1], runtime_list[2], runtime_list[3]))
     ax.set_xticklabels(['0', '0.01', '0.1', '0.2'])
     ax.yaxis.grid(True)
-    plt.xlabel('epsilon')
-    plt.ylabel('running time [sec]')
+    plt.xlabel('epsilon', fontsize=18)
+    plt.ylabel('running time [sec]', fontsize=18)
+    plt.tick_params(labelsize=18)
     plt.savefig('../fig/boxplot_runtime_' + str(map.number) + '_greedy.png')
     plt.show()

@@ -60,30 +60,30 @@ def run_greedy(map, specified_prob):
     # get the most likely digit
     print(char.argmax())
 
-    # show ground truth, explored, and predicted map
-    # ground truth
-    fig, ax = plt.subplots()
-    ax.imshow(game.truthMap, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_gt_' + str(map.number) + '_greedy.png')
-    plt.show()
-    # explored w/ a robot's trajectory
-    fig, ax = plt.subplots()
-    ax.plot(path_x, path_y, color='red')
-    ax.imshow(game.exploredMap, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_explore_' + str(map.number) + '_greedy.png')
-    plt.show()
-    # predicted
-    fig, ax = plt.subplots()
-    ax.imshow(image, cmap='gray')
-    plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
-    plt.savefig('../fig/map_pred_' + str(map.number) + '_greedy.png')
-    plt.show()
+    # # show ground truth, explored, and predicted map
+    # # ground truth
+    # fig, ax = plt.subplots()
+    # ax.imshow(game.truthMap, cmap='gray')
+    # plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    # plt.savefig('../fig/map_gt_' + str(map.number) + '_greedy.png')
+    # plt.show()
+    # # explored w/ a robot's trajectory
+    # fig, ax = plt.subplots()
+    # ax.plot(path_x, path_y, color='red')
+    # ax.imshow(game.exploredMap, cmap='gray')
+    # plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    # plt.savefig('../fig/map_explore_' + str(map.number) + '_greedy.png')
+    # plt.show()
+    # # predicted
+    # fig, ax = plt.subplots()
+    # ax.imshow(image, cmap='gray')
+    # plt.subplots_adjust(left=0.05, right=0.95, bottom=0.1, top=0.95)
+    # plt.savefig('../fig/map_pred_' + str(map.number) + '_greedy.png')
+    # plt.show()
 
 if __name__ == '__main__':
     # init map and prob
-    map = Map()
+    map = Map() # 7
     specified_prob = 0.8
 
     # run exploration
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
     map.getNewMap()
     map.getNewMap()
-    map.getNewMap()
+    map.getNewMap() # 0
 
     # run exploration
     run_greedy(map, specified_prob)

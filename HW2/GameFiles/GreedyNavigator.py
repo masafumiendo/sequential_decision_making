@@ -199,20 +199,3 @@ class GreedyNavigator:
         location_next = (xLoc, yLoc)
 
         return location_next
-
-    def _summarize_progress(self, location, dict_info_gain, direction, map_gt, map, map_prediction):
-        print(" ")
-        print(f"before one iteration of the game -> Robot at: ({location[0]}, {location[1]})")
-        print(dict_info_gain)
-        print("{0} is selected as a next robot direction".format(direction))
-
-        char = self.classNet.runNetwork(map_prediction)
-        estimated_digit = char.argmax()
-        print(self.softmax(torch.from_numpy(char).clone()).numpy())
-        print("{0} is the predicted value based on the exploration so far".format(estimated_digit))
-
-        fig, (ax1, ax2, ax3) = plt.subplots(ncols=3)
-        pos = ax1.imshow(map_gt)
-        pos = ax2.imshow(map)
-        pos = ax3.imshow(map_prediction, cmap='gray')
-        plt.show()
