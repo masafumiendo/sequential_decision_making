@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/HW2/ROB534_HW_2_MEndo.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/HW2/ROB534_HW_2_MEndo.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3-code-matlab.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3-code-python.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +102,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
-  <component name="RunManager" selected="Python.main_epsilon_greedy">
+  <component name="RunManager">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="sequential_decision_making" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -123,7 +125,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="random_explorer" type="PythonConfigurationType" factoryName="Python">
       <module name="sequential_decision_making" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -131,34 +133,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/sdm_robotics/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HW2/GameFiles" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HW3/provided_code/HW3-code-python" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW2/GameFiles/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="main_epsilon_greedy" type="PythonConfigurationType" factoryName="Python">
-      <module name="sequential_decision_making" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/sdm_robotics/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HW2/GameFiles" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW2/GameFiles/main_epsilon_greedy.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW3/provided_code/HW3-code-python/random_explorer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -167,33 +147,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main_greedy" type="PythonConfigurationType" factoryName="Python">
-      <module name="sequential_decision_making" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/sdm_robotics/bin/python" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HW2/GameFiles" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW2/GameFiles/main_greedy.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Python.main_epsilon_greedy" />
-      <item itemvalue="Python.main_greedy" />
-      <item itemvalue="Python.main" />
-    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -223,6 +176,9 @@
       <workItem from="1613412830807" duration="1664000" />
       <workItem from="1613443965446" duration="1660000" />
       <workItem from="1613714287155" duration="1000" />
+      <workItem from="1614326323427" duration="610000" />
+      <workItem from="1614380296939" duration="591000" />
+      <workItem from="1614403828796" duration="98000" />
     </task>
     <servers />
   </component>
