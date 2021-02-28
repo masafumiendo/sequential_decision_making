@@ -1,8 +1,8 @@
 % Author: Masafumi Endo
 % Date: 02/28/2021
-% Objective: 
+% Objective: implement qNavigate to solve MDP
 
-function qNavigate(maze, noise, discount)
+function reward = qNavigate(maze, noise, discount, epsilon)
 
     % get starting index w/ num of states
     [s_start, num_states] = get_start(maze);
@@ -11,6 +11,8 @@ function qNavigate(maze, noise, discount)
     % init Q-function
     Q_new = zeros(num_states, num_actions);
     
+    % draw maze environment
+    draw_maze(maze, s_start);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% value iteration
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,10 +28,31 @@ function qNavigate(maze, noise, discount)
             error = max([error, abs(max(Q_cur(s, :)) - max(Q_new(s, :)))]);
         end
         
+        % show value iteration process
+        draw_maze(maze, s_start, max(Q_new, [], 2))
+        
         % finish value iteration 
         if error < epsilon
             break
         end
+    end
+    
+    % init reward
+    reward = 0;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %% run qNavigate for 100 iterations
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    s_cur = s_start;
+    for iter=1:100
+        % choose best action based on Q-function
+        [~, a] = max(Q_new(s_cur, :));
+        % take action to move
+        s_cur = move_maze(maze, s_cur, a, noise);
+        % show robot moving process
+        draw_maze(maze, s_cur, max(Q_new, [], 2))
+        
+        % get reward
+        reward = reward + get
     end
     
 end
