@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3bf93098-fd83-4251-bb78-70f3e2430c99" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW3/HW3-code-matlab.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW3/HW3-code-python.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +92,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/HW3/implementation" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -101,6 +100,11 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/HW3/implementation" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -179,6 +183,7 @@
       <workItem from="1614326323427" duration="610000" />
       <workItem from="1614380296939" duration="591000" />
       <workItem from="1614403828796" duration="98000" />
+      <workItem from="1614490751673" duration="6542000" />
     </task>
     <servers />
   </component>
