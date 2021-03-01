@@ -6,7 +6,7 @@ function reward = qNavigate(maze, noise, discount, epsilon)
 
     % get starting index w/ num of states
     [s_start, num_states] = get_start(maze);
-    num_actions = 4; %
+    num_actions = 4; % action space
     
     % init Q-function
     Q_new = zeros(num_states, num_actions);
