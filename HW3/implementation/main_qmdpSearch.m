@@ -5,7 +5,7 @@
 % set variable
 noise = 0.1;
 discount = 0.9;
-epsilon = 0.0001;
+epsilon = 0.001;
 % load maze environment
 maze = load_maze('maze1.txt');
 
