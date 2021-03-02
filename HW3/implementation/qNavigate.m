@@ -48,9 +48,9 @@ function reward = qNavigate(maze, noise, discount, epsilon)
         [~, a] = max(Q_new(s_cur, :));
         % take action to move
         s_cur = move_maze(maze, s_cur, a, noise);
+        
         % show robot moving process
         draw_maze(maze, s_cur, max(Q_new, [], 2))
-        
         % get reward
         reward = reward + get_reward(maze, s_cur);
     end

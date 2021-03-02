@@ -27,15 +27,18 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     s_cur = s_start;
     for iter=1:100
+        % calculate QMDP
         % choose best action based on QMDP
-        [~, a] = max(Q_new(s_cur, :));
+        [~, a] = max(Qmdp(b, :));
         % take action to move
         s_cur = move_maze(maze, s_cur, a, noise);
+        
         % show robot moving process
         draw_maze(maze, s_cur, max(Q_new, [], 2))
-        
         % get reward
         reward = reward + get_reward(maze, s_cur);
+        % move target for the next loop
+        maze = moveTarget(maze);
     end
     
 end
