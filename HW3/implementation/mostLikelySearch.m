@@ -6,7 +6,7 @@ function reward = mostLikelySearch(maze, noise, discount, epsilon)
 
     % get starting index w/ num of states
     [s_start, num_states] = get_start(maze);
-    num_states = num_states^2; 
+    num_states = num_states^2; % (agent * target) state
     num_actions = 4; % action space
     
     % get transition probability function and reward function

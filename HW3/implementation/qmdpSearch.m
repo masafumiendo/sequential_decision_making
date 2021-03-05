@@ -6,7 +6,8 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
 
     % get starting index w/ num of states
     [s_start, num_states] = get_start(maze);
-    num_states = num_states^2; 
+    num_states_target = num_states;
+    num_states = num_states^2; % (agent * target) state
     num_actions = 4; % action space
     
     % get transition probability function and reward function
@@ -18,32 +19,42 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% value iteration
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    Q_new = value_iteration(Tfunc, Rfunc, num_states, num_actions, discount, epsilon, s_start, maze);
+    Q_new = value_iteration(Tfunc, Rfunc, num_states, num_actions, discount, epsilon);
+    
+    % show Q-function
+    draw_maze(maze, s_start, max(Q_new, [], 2))
     
     % init reward
     reward = get_reward(maze, s_start);
+
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %% run qmdpSearch for 100 iterations
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    s_cur = s_start;
+    % init belief state of target
+    belief = ones(num_states_target, 1) / num_states_target;
+    belief(6, 1) = 0; % obstacle
+    belief = belief / sum(belief);
+    % set initial position
+    s_agent = s_start;
     for iter=1:100
-        % calculate QMDP
-        % choose best action based on QMDP
-        [~, a] = max(Qmdp(b, :));
+        % move target
+        maze = moveTarget(maze);
+        % get Qmdp(a, b)
+        Q_target = transpose(Q_new((s_agent - 1) * num_states_target + (1:num_states_target), :));
+        Qmdp = Q_target * belief;
+        % choose best action as argmax Qmdp(a, b)
+        [~, a] = max(Qmdp);
         % take action to move
-        s_cur = move_maze(maze, s_cur, a, noise);
+        s_agent = move_maze(maze, s_agent, a, noise);
+        % observe environment
+        obs = getObservation(maze, s_agent);
+        % belief update
+        belief = belief_update(obs, belief, s_agent, num_states_target);
         
         % show robot moving process
-        draw_maze(maze, s_cur, max(Q_new, [], 2))
+        draw_maze(maze, s_agent, max(Q_new, [], 2))
         % get reward
-        reward = reward + get_reward(maze, s_cur);
-        % move target for the next loop
-        maze = moveTarget(maze);
+        reward = reward + get_reward(maze, s_agent);
     end
     
 end
-
-
-
-
-

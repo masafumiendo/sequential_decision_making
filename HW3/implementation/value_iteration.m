@@ -1,5 +1,5 @@
 % function to perform value iteration until converge
-function Q = value_iteration(Tfunc, Rfunc, num_states, num_actions, discount, epsilon, s_start, maze)
+function Q = value_iteration(Tfunc, Rfunc, num_states, num_actions, discount, epsilon)
     % init Q-function
     Q_new = zeros(num_states, num_actions);
     while true
@@ -14,9 +14,6 @@ function Q = value_iteration(Tfunc, Rfunc, num_states, num_actions, discount, ep
         end
         % update Bellman error if necessary
         error = max([error, abs(max(Q_cur(s, :)) - max(Q_new(s, :)))]);
-        
-        % show value iteration process
-        draw_maze(maze, s_start, max(Q_new, [], 2))
         
         % finish value iteration 
         if error < epsilon
