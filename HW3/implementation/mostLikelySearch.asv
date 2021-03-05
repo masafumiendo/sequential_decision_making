@@ -39,10 +39,7 @@ function reward = mostLikelySearch(maze, noise, discount, epsilon)
     for iter=1:100
         % move target
         maze = moveTarget(maze);
-        % retrieve most-likely target position from belief state
-        [~, s_target] = max(belief);
-        s_target = (s_agent - 1) * num_states_target + s_target;
-        % choose best action based on most-likely position of the target
+        % choose best action as argmax Qmdp(a, b)
         [~, a] = max(Q_new(s_target, :));
         % take action to move
         s_agent = move_maze(maze, s_agent, a, noise);
