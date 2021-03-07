@@ -40,8 +40,8 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
         % move target
         maze = moveTarget(maze);
         % get Qmdp(a, b)
-        Q_target = transpose(Q_new((s_agent - 1) * num_states_target + (1:num_states_target), :));
-        Qmdp = Q_target * belief;
+        Q_ = transpose(Q_new((s_agent - 1) * num_states_target + (1:num_states_target), :));
+        Qmdp = Q_ * belief;
         % choose best action as argmax Qmdp(a, b)
         [~, a] = max(Qmdp);
         % take action to move
