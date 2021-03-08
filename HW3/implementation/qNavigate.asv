@@ -20,12 +20,12 @@ function reward = qNavigate(maze, noise, discount, epsilon)
         error = 0;
         for s=1:num_states
             for a=1:num_actions
-                Q_old = Q(s, a);
                 % update Q-function
                 Q(s, a) = get_reward(maze, s) + get_expected_values(s, a, Q, discount, noise, maze);
-                % update Bellman error if necessary
                 error = max([error, abs(Q_old - Q(s, a))]);
             end
+            % update Bellman error if necessary
+            error = max([error, abs(max(Q_cur(s, :)) - max(Q(s, :)))]);
         end
         
         % show value iteration process
