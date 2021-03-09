@@ -55,9 +55,6 @@ function reward = mostLikelySearch(maze, noise, discount, epsilon)
         
         % show robot moving process
         draw_maze(maze, s_agent, max(Q, [], 2))
-        if iter <= 4
-            saveas(gcf, strcat(pwd, '/fig/', string(iter), '_mostLikely.png'))
-        end
         % get reward
         reward = reward + get_reward(maze, s_agent);
     end
