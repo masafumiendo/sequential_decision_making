@@ -34,11 +34,13 @@ function reward = mostLikelySearch(maze, noise, discount, epsilon)
     belief = ones(num_states_target, 1) / num_states_target;
     belief(6, 1) = 0; % obstacle
     belief = belief / sum(belief);
+    T_bel = get_trans_belief(num_states_target, num_actions, maze);
     % set initial position
     s_agent = s_start;
     for iter=1:100
-        % move target
+        % move target, then motion update (prediction step)
         maze = moveTarget(maze);
+        belief = T_bel * belief;
         % retrieve most-likely target position from belief state
         [~, s_target] = max(belief);
         s_target = (s_agent - 1) * num_states_target + s_target;
@@ -48,11 +50,14 @@ function reward = mostLikelySearch(maze, noise, discount, epsilon)
         s_agent = move_maze(maze, s_agent, a, noise);
         % observe environment
         obs = getObservation(maze, s_agent);
-        % belief update
+        % observation update (update step)
         belief = observation_update(obs, belief, s_agent, num_states_target);
         
         % show robot moving process
         draw_maze(maze, s_agent, max(Q, [], 2))
+        if iter <= 4
+            saveas(gcf, strcat(pwd, '/fig/', string(iter), '_mostLikely.png'))
+        end
         % get reward
         reward = reward + get_reward(maze, s_agent);
     end

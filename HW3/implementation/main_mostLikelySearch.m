@@ -3,7 +3,7 @@
 % Objective: run mostLikelySearch
 
 % set variable
-noise = 0.1;
+noise = 0.3;
 discount = 0.9;
 epsilon = 0.00001;
 % load maze environment

@@ -34,13 +34,13 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
     belief = ones(num_states_target, 1) / num_states_target;
     belief(6, 1) = 0; % obstacle
     belief = belief / sum(belief);
-    T_bel = get_trans_belief(num_states_target, num_actions, maze);
+    T_bel = zeros(num_states_target, num_states_target);
+    
     % set initial position
     s_agent = s_start;
     for iter=1:100
-        % move target, then motion update (prediction step)
+        % move target
         maze = moveTarget(maze);
-        belief = T_bel * belief;
         % get Qmdp(a, b)
         Q_ = transpose(Q((s_agent - 1) * num_states_target + (1:num_states_target), :));
         Qmdp = Q_ * belief;
@@ -55,9 +55,6 @@ function reward = qmdpSearch(maze, noise, discount, epsilon)
         
         % show robot moving process
         draw_maze(maze, s_agent, max(Q, [], 2))
-        if iter <= 4
-            saveas(gcf, strcat(pwd, '/fig/', string(iter), '_qmdp.png'))
-        end
         % get reward
         reward = reward + get_reward(maze, s_agent);
     end
